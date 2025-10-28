@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Vend+Sans:ital,wght@0,300..700;1,300..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap");
+@plugin "tailwind-scrollbar-hide";
 
 .fugaz-one-regular {
   font-family: "Fugaz One", sans-serif;
@@ -22,6 +23,7 @@
   /* Text Colors */
   --text-color-primary: #0046ff;
   --text-color-secondary: #11224e;
+  --text-color-third: #6B7280
 
   /* Border */
   --border-color-primary: #d1d5db;

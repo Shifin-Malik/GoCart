@@ -19,14 +19,14 @@ const ProductCard = ({ product }) => {
           <img src={assets.heart_icon} alt="heart_icon" className="h-3 w-3" />
         </button>
       </div>
-      <p className="md:text-base font-medium pt-2 w-full truncate">
+      <p className="md:text-base text-secondary font-medium pt-2 w-full truncate">
         {product.name}
       </p>
       <p className="w-full text-xs text-gray-500/70 max-sm:hidden truncate">
         {product.description}
       </p>
       <div className="flex items-end justify-between w-full mt-1">
-        <p className="text-base font-medium">
+        <p className="text-base font-medium text-secondary">
           {currency}
           {product.offerPrice}
         </p>

@@ -14,6 +14,12 @@ import headerslide_iwatch from "./headerslide_iwatch.png";
 import headslide_headphone from "./headslide_headphone.png";
 import ipadpro from "./ipadpro.png";
 import macbookpro from "./macbookpro.png";
+import imac from "./imac.png";
+import featuredImg1 from "./featuredImg1.jpg";
+import featuredImg2 from "./featuredImg2.jpg";
+import featuredImg3 from "./featuredImg3.jpg";
+import featuredImg4 from "./featuredImg4.jpg";
+import featuredImg5 from "./featuredImg5.jpg";
 
 export const assets = {
   user,
@@ -31,7 +37,13 @@ export const assets = {
   headerslide_iwatch,
   heart_icon,
   ipadpro,
-  macbookpro
+  imac,
+  macbookpro,
+  featuredImg1,
+  featuredImg2,
+  featuredImg3,
+  featuredImg4,
+  featuredImg5,
 };
 
 export const productsDummyData = [
@@ -59,6 +71,19 @@ export const productsDummyData = [
     image: [macbookpro],
     category: "macbook",
     date: 1738667417511,
+    __v: 0,
+  },
+  {
+    _id: "67a1f4e43f34a77b6dde914k3esdl4",
+    userId: "user_2sZFHS1UIIysJyDVzC3oopQhUhTIhw",
+    name: "Imac Pro",
+    description:
+      "The first 81.28 cm (32”) Retina 6K display ever. Up to 1,600 nits of brightness. An astonishing 10,00,000:1 contrast ratio and super-wide viewing angle. Over a billion colours presented with exceptional accuracy. And dynamic range that transforms the professional workflow. Introducing Apple Pro Display XDR, the world’s best pro display.",
+    price: 499.99,
+    offerPrice: 399.99,
+    image: [imac],
+    category: "imac",
+    date: 1738667236865,
     __v: 0,
   },
   {
