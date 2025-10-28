@@ -20,6 +20,18 @@ import featuredImg2 from "./featuredImg2.jpg";
 import featuredImg3 from "./featuredImg3.jpg";
 import featuredImg4 from "./featuredImg4.jpg";
 import featuredImg5 from "./featuredImg5.jpg";
+import Apple17 from "./Apple17.jpg";
+import macbookpro14 from "./macbookpro14.jpg";
+import ipadpro1 from "./ipadpro.jpg";
+import appleWatch3 from "./appleWatch3.jpg";
+import iphoneair from "./iphoneair.jpg";
+import iphone17 from "./iphone17.jpg";
+import applewatch11 from "./applewatch11.jpg";
+import appleairpods from "./appleairpods.jpg";
+import applewatchse3 from "./applewatchse3.jpg";
+import appleVisionPro from "./appleVisionPro.jpg";
+import exploreiphoneaccessories from "./exploreiphoneaccessories.png";
+import logo from "./logo.png";
 
 export const assets = {
   user,
@@ -44,6 +56,18 @@ export const assets = {
   featuredImg3,
   featuredImg4,
   featuredImg5,
+  Apple17,
+  macbookpro14,
+  ipadpro1,
+  appleWatch3,
+  iphoneair,
+  iphone17,
+  appleVisionPro,
+  applewatch11,
+  applewatchse3,
+  appleairpods,
+  exploreiphoneaccessories,
+  logo,
 };
 
 export const productsDummyData = [
@@ -130,5 +154,85 @@ export const productsDummyData = [
     category: "ipad",
     date: 1738667417511,
     __v: 0,
+  },
+];
+
+export const featuredItems = [
+  {
+    id: 1,
+    image: assets.Apple17,
+    title: "iPhone 17 Pro",
+    heading: "All out Pro.",
+    price: "From $1099 or $45.79/mo. per month  for 24 mo.months Footnote *",
+  },
+  {
+    id: 1,
+    image: assets.macbookpro14,
+    title: "MacBook Pro 14”",
+    heading: "Supercharged by M5.",
+    price: "From $1599 or $133.25/mo. per month  for 12 mo.months Footnote †",
+  },
+  {
+    id: 2,
+    image: assets.iphoneair,
+    title: "iPhone Air",
+    heading: "The thinnest iPhone ever.",
+    price: "From $999 or $41.62/mo. per month  for 24 mo.months Footnote *",
+  },
+  {
+    id: 1,
+    image: assets.ipadpro1,
+    title: "iPad Pro",
+    heading: "Mmmmm. Power.",
+    price: "From $999 or $83.25/mo. per month  for 12 mo.months Footnote †",
+  },
+  {
+    id: 3,
+    image: assets.iphone17,
+    title: "iPhone 17",
+    heading: "Magichromatic.",
+    price: "From $799 or $33.29/mo. per month  for 24 mo.months Footnote *",
+  },
+  {
+    id: 4,
+    image: assets.appleVisionPro,
+    title: "Apple Vision Pro",
+    heading: "New powerful M5 chip and comfortable Dual Knit Band.",
+    price: "From $3499 or $291.58/mo. per month  for 12 mo.months Footnote †",
+  },
+  {
+    id: 5,
+    image: assets.applewatch11,
+    title: "Apple Watch Series 11",
+    heading: "The ultimate way to watch your health.",
+    price: "From $399 or $33.25/mo. per month  for 12 mo. months Footnote *",
+  },
+  {
+    id: 1,
+    image: assets.appleWatch3,
+    title: "Apple Watch Ultra 3”",
+    heading: "Personal beast.",
+    price: "From $799 or $66.58/mo. per month  for 12 mo. months Footnote *",
+  },
+  {
+    id: 8,
+    image: assets.applewatchse3,
+    title: "Apple Watch SE 3",
+    heading: "Walk it. Talk it. Track it. Love it.",
+    price: "From $249 or $20.75/mo. per month  for 12 mo. months Footnote *",
+  },
+  {
+    id: 9,
+    image: assets.appleairpods,
+    title: "AirPods Pro 3",
+    heading: "The world’s best in-ear Active Noise Cancellation. Footnote ∆∆",
+    price: "$249 or $41.50/mo. per month  for 6 mo.months Footnote †",
+  },
+  {
+    id: 10,
+    image: assets.exploreiphoneaccessories,
+    title: "",
+    heading: "Explore iPhone.",
+    price: "",
   },
 ];

@@ -3,6 +3,9 @@ import NavBar from "../components/NavBar";
 import HeaderSlider from "../components/HeaderSlider";
 import HomeProducts from "../components/HomeProducts";
 import FeaturedProducts from "../components/FeaturedProducts";
+import Support from "../components/Support";
+import Footer from "../components/Footer";
+import NewsLetter from "../components/NewsLatter";
 
 function Home() {
   return (
@@ -12,7 +15,10 @@ function Home() {
         <HeaderSlider />
         <HomeProducts />
         <FeaturedProducts />
+        <Support />
+        <NewsLetter />
       </div>
+      <Footer />
     </>
   );
 }
