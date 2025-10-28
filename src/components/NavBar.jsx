@@ -12,17 +12,17 @@ function NavBar() {
 
       <div className="hidden md:flex items-center gap-4 lg:gap-8 font-bold">
         {[
-          { name: "Home", path: "/" },
-          { name: "Shop", path: "/shop" },
-          { name: "About Us", path: "/about" },
-          { name: "Contact", path: "/contact" },
-          { name: "Services", path: "/services" },
+          { id:1,name: "Home", path: "/GoCart" },
+          { id:2, name: "Shop", path: "/shop" },
+          { id:3,name: "About Us", path: "/about" },
+          { id:4,name: "Contact", path: "/contact" },
+          { id:5,name: "Services", path: "/services" },
         ].map((link) => (
           <NavLink
-            key={link.name}
+            key={link.id}
             to={link.path}
             className={({ isActive }) =>
-              `transition hover:text-gray-900 ${
+              `transition font-vend-san ${
                 isActive ? "border-b-2 border-secondary text-primary" : ""
               }`
             }
@@ -35,7 +35,7 @@ function NavBar() {
       <div className="hidden sm:flex relative w-80 justify-start items-center gap-6">
         <input
           type="text"
-          className="h-8 w-60 rounded-lg border border-black px-8 text-sm"
+          className="h-8 w-60 rounded-lg border-2 border-black  px-8 text-sm"
           placeholder="Search"
         />
         <IoSearch size={18} className="absolute left-2" />

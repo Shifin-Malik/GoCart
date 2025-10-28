@@ -5,7 +5,7 @@ const HeaderSlider = () => {
   const sliderData = [
     {
       id: 1,
-      title: "Experience Innovation with the iPhone 17 Pro Max",
+      title: "IPhone 17 Pro Max",
       offer: "Limited Time Offer — Save 30%",
       buttonText1: "Buy Now",
       buttonText2: "Learn More",
@@ -13,7 +13,7 @@ const HeaderSlider = () => {
     },
     {
       id: 2,
-      title: "Power Meets Precision — The New iMac 2025",
+      title: "The New iMac 2025",
       offer: "Special Launch Deal — 25% Off",
       buttonText1: "Buy Now",
       buttonText2: "Explore More",
@@ -21,7 +21,7 @@ const HeaderSlider = () => {
     },
     {
       id: 3,
-      title: "Pure Sound, Perfect Clarity — Noise-Cancelling Headphones",
+      title: "Noise-Cancelling Headphones",
       offer: "This Week Only — Save 20%",
       buttonText1: "Buy Now",
       buttonText2: "Discover",
@@ -29,7 +29,7 @@ const HeaderSlider = () => {
     },
     {
       id: 4,
-      title: "Unleash Creativity — MacBook Pro M4 Edition",
+      title: "MacBook Pro M4 Edition",
       offer: "Exclusive Offer — 15% Off",
       buttonText1: "Buy Now",
       buttonText2: "View Details",
@@ -37,7 +37,7 @@ const HeaderSlider = () => {
     },
     {
       id: 5,
-      title: "Unleash Creativity — MacBook Pro M4 Edition",
+      title: "MacBook Pro M4 Edition",
       offer: "Exclusive Offer — 15% Off",
       buttonText1: "Buy Now",
       buttonText2: "View Details",
@@ -72,8 +72,10 @@ const HeaderSlider = () => {
             className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#E6E9F2] py-8 md:px-14 px-5 mt-6 rounded-xl min-w-full"
           >
             <div className="md:pl-8 mt-10 md:mt-0">
-              <p className="md:text-base text-primary pb-1">{slide.offer}</p>
-              <h1 className="max-w-lg md:text-[40px]  text-2xl font-semibold">
+              <p className="md:text-base font-semibold text-primary pb-1">
+                {slide.offer}
+              </p>
+              <h1 className="text-secondary max-w-lg md:text-[32px]  text-2xl font-bold font-vend-san">
                 {slide.title}
               </h1>
               <div className="flex items-center mt-4 md:mt-6 ">
