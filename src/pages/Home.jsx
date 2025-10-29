@@ -11,7 +11,7 @@ function Home() {
   return (
     <>
       <NavBar />
-      <div className="px-6 md:px-16 lg:px-32">
+      <div className="px-6 md:px-12 lg:px-20">
         <HeaderSlider />
         <HomeProducts />
         <FeaturedProducts />

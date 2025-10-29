@@ -1,11 +1,10 @@
 import React from "react";
-import { assets } from "../assets/assets";
 import * as motion from "motion/react-client";
 import { useContext } from "react";
 import { AppContextData } from "../context/AppContext";
 
 function FeaturedProducts() {
-  const { featuredItems } = useContext(AppContextData);
+  const { featured } = useContext(AppContextData);
   return (
     <div className="mt-14">
       <div className="flex flex-col items-center">
@@ -16,7 +15,7 @@ function FeaturedProducts() {
       </div>
 
       <div className="flex gap-10 mt-6 p-4 overflow-x-auto scrollbar-hide">
-        {featuredItems.map((item) => (
+        {featured.map((item) => (
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

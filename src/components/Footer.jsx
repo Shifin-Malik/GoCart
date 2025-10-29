@@ -1,63 +1,41 @@
 import React from "react";
-import { assets } from "../assets/assets";
+import { FaXTwitter, FaInstagram, FaLinkedin, FaGithub } from "react-icons/fa6";
 
-const Footer = () => {
+function Footer() {
   return (
-    <footer>
-      <div className="flex flex-col md:flex-row items-start justify-center px-6 md:px-16 lg:px-32 gap-10 py-14 border-b border-gray-500/30 text-gray-500">
-        <div className="w-4/5">
-          <img className="w-20 md:w-20" src={assets.logo} alt="logo" />
-          <p className="mt-6 text-sm">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+    <div className="h-80 w-full p-4 md:p-10 px-6 md:px-16">
+      <div className="border border-zinc-200 shadow-lg rounded-2xl p-6 md:p-10">
+        <div className="flex flex-col justify-center items-center gap-1 w-full">
+          <h1 className="text-secondary font-semibold text-2xl text-center fugaz-one-regular">
+            <span className="fugaz-one-regular text-primary">Go</span>Cart
+          </h1>
+          <p className="text-sm text-secondary">
+            Shop smarter with GoCart — the easiest way to fill your cart with
+            the things you love. Fast, reliable, and made for modern shoppers.
           </p>
         </div>
-
-        <div className="w-1/2 flex items-center justify-start md:justify-center">
-          <div>
-            <h2 className="font-medium text-gray-900 mb-5">Company</h2>
-            <ul className="text-sm space-y-2">
-              <li>
-                <a className="hover:underline transition" href="#">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a className="hover:underline transition" href="#">
-                  About us
-                </a>
-              </li>
-              <li>
-                <a className="hover:underline transition" href="#">
-                  Contact us
-                </a>
-              </li>
-              <li>
-                <a className="hover:underline transition" href="#">
-                  Privacy policy
-                </a>
-              </li>
-            </ul>
-          </div>
+        <div className="flex gap-4 mt-5 text-gray-500 justify-center w-full">
+          <a href="#" className="hover:text-gray-900 transition-colors">
+            <FaXTwitter size={18} />
+          </a>
+          <a href="#" className="hover:text-gray-900 transition-colors">
+            <FaInstagram size={18} />
+          </a>
+          <a href="#" className="hover:text-gray-900 transition-colors">
+            <FaLinkedin size={18} />
+          </a>
+          <a href="#" className="hover:text-gray-900 transition-colors">
+            <FaGithub size={18} />
+          </a>
         </div>
 
-        <div className="w-1/2 flex items-start justify-start md:justify-center">
-          <div>
-            <h2 className="font-medium text-gray-900 mb-5">Get in touch</h2>
-            <div className="text-sm space-y-2">
-              <p>+1-234-567-890</p>
-              <p>contact@greatstack.dev</p>
-            </div>
-          </div>
+        <div className="mt-10 w-full border border-zinc-200 shadow-lg"></div>
+        <div className="flex justify-center p-2 text-secondary">
+          <p className="text-xs"> © 2025 GoCart. All rights reserved.</p>
         </div>
       </div>
-      <p className="py-4 text-center text-xs md:text-sm">
-        Copyright 2025 © GreatStack.dev All Right Reserved.
-      </p>
-    </footer>
+    </div>
   );
-};
+}
 
 export default Footer;

@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { IoSearch } from "react-icons/io5";
 import { assets } from "../assets/assets";
 
 function NavBar() {
@@ -12,11 +11,11 @@ function NavBar() {
 
       <div className="hidden md:flex items-center gap-4 lg:gap-8 font-bold">
         {[
-          { id:1,name: "Home", path: "/GoCart" },
-          { id:2, name: "Shop", path: "/shop" },
-          { id:3,name: "About Us", path: "/about" },
-          { id:4,name: "Contact", path: "/contact" },
-          { id:5,name: "Services", path: "/services" },
+          { id: 1, name: "Home", path: "/GoCart" },
+          { id: 2, name: "Shop", path: "/shop" },
+          { id: 3, name: "About Us", path: "/about" },
+          { id: 4, name: "Contact", path: "/contact" },
+          { id: 5, name: "Services", path: "/services" },
         ].map((link) => (
           <NavLink
             key={link.id}
@@ -32,24 +31,21 @@ function NavBar() {
         ))}
       </div>
 
-      <div className="hidden sm:flex relative w-80 justify-start items-center gap-6">
-        <input
-          type="text"
-          className="h-8 w-60 rounded-lg border-2 border-black  px-8 text-sm"
-          placeholder="Search"
+      <div className="hidden sm:flex gap-4">
+        <button className="bg-primary w-36 h-10 rounded-3xl font-semibold text-white cursor-pointer">
+          Create Account
+        </button>
+        <img
+          src={assets.user}
+          className="rounded-full w-8 h-8 cursor-pointer"
+          alt="User Profile"
         />
-        <IoSearch size={18} className="absolute left-2" />
-        <div className="hidden sm:flex">
-          <img
-            src={assets.user}
-            className="rounded-full w-8 h-8 cursor-pointer"
-            alt="User Profile"
-          />
-        </div>
       </div>
 
       <div className="flex items-center gap-4 sm:hidden">
-        <IoSearch size={22} className="cursor-pointer" />
+        <button className="bg-primary w-32 h-10 rounded-3xl font-semibold text-sm text-white cursor-pointer">
+          Create Account
+        </button>
         <img
           src={assets.user}
           className="rounded-full w-8 h-8 cursor-pointer"
