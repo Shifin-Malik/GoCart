@@ -2,6 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { AppContextData } from "../context/AppContext";
 import ProductCard from "./ProductCard";
+import { useNavigate } from "react-router-dom";
 
 function HomeProducts() {
   const { products } = useContext(AppContextData);
@@ -15,9 +16,6 @@ function HomeProducts() {
           <ProductCard key={idx} product={product} />
         ))}
       </div>
-      <button className="px-12 py-2.5 border rounded text-gray-500/70 hover:bg-slate-50/90 transition">
-        See more
-      </button>
     </div>
   );
 }

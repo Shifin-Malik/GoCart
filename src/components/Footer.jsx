@@ -15,16 +15,22 @@ function Footer() {
           </p>
         </div>
         <div className="flex gap-4 mt-5 text-gray-500 justify-center w-full">
-          <a href="#" className="hover:text-gray-900 transition-colors">
+          <a
+            href="https://x.com/Shifinmalik"
+            className="hover:text-gray-900 transition-colors"
+          >
             <FaXTwitter size={18} />
           </a>
           <a href="#" className="hover:text-gray-900 transition-colors">
             <FaInstagram size={18} />
           </a>
-          <a href="#" className="hover:text-gray-900 transition-colors">
+          <a
+            href="in/shifin-malik"
+            className="hover:text-gray-900 transition-colors"
+          >
             <FaLinkedin size={18} />
           </a>
-          <a href="#" className="hover:text-gray-900 transition-colors">
+          <a href="https://github.com/Shifin-Malik/" className="hover:text-gray-900 transition-colors">
             <FaGithub size={18} />
           </a>
         </div>

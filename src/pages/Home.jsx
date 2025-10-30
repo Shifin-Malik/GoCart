@@ -7,7 +7,9 @@ import Support from "../components/Support";
 import Footer from "../components/Footer";
 import NewsLetter from "../components/NewsLatter";
 
+
 function Home() {
+
   return (
     <>
       <NavBar />

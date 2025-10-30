@@ -12,7 +12,7 @@ function NavBar() {
       <div className="hidden md:flex items-center gap-4 lg:gap-8 font-bold">
         {[
           { id: 1, name: "Home", path: "/GoCart" },
-          { id: 2, name: "Shop", path: "/shop" },
+          { id: 2, name: "Products", path: "/product" },
           { id: 3, name: "About Us", path: "/about" },
           { id: 4, name: "Contact", path: "/contact" },
           { id: 5, name: "Services", path: "/services" },

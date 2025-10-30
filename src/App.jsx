@@ -1,14 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
+import Product from "./components/Product/Product";
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/GoCart" element={<Home />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/GoCart" element={<Home />} />
+      <Route path="/product/:id" element={<Product />} />
+    </Routes>
   );
 }
 
