@@ -5,8 +5,10 @@ import sm_controller from "./sm_controller.png";
 import arrow_icon_white from "./arrow_icon_white.svg";
 import arrow_icon from "./arrow_icon.svg";
 import headphone from "./headphone.png";
+import headphone2 from "./headphone2.png";
+import headphone3 from "./headphone3.png";
+import headphone4 from "./headphone4.png";
 import playstation from "./playstation.png";
-import headerslide_iphone17promax from "./headerslide_iphone17promax.png";
 import headerslide_mac from "./headerslide_mac.png";
 import headerslide_imac from "./headerslide_imac.svg";
 import star_icon from "./star_icon.svg";
@@ -34,6 +36,9 @@ import applewatchse3 from "./applewatchse3.jpg";
 import appleVisionPro from "./appleVisionPro.jpg";
 import exploreiphoneaccessories from "./exploreiphoneaccessories.png";
 import logo from "./logo.png";
+import iphone1 from "./iphone1.png";
+import iphone2 from "./iphone2.png";
+import iphone3 from "./iphone3.png";
 
 export const assets = {
   user,
@@ -44,7 +49,7 @@ export const assets = {
   arrow_icon,
   headphone,
   playstation,
-  headerslide_iphone17promax,
+  iphone1,
   headerslide_mac,
   headerslide_imac,
   headslide_headphone,
@@ -72,6 +77,13 @@ export const assets = {
   star_icon,
   logo,
   star_dull_icon,
+  headphone2,
+  headphone3,
+  headphone4,
+  iphone1,
+  iphone2,
+  iphone3,
+  iphone2,
 };
 
 export const productsDummyData = [
@@ -83,7 +95,7 @@ export const productsDummyData = [
       "iPhone 17 Pro Max 1 TB: 17.42 cm (6.9″) Display with Promotion, A19 Pro Chip, Best Battery Life in Any iPhone Ever, Pro Fusion Camera System, Center Stage Front Camera; Silver",
     price: 1099,
     offerPrice: 349.99,
-    image: [headerslide_iphone17promax],
+    image: [iphone1, iphone2, iphone3],
     category: "Phone",
     date: 1738667417511,
     __v: 0,
@@ -140,7 +152,7 @@ export const productsDummyData = [
       "Apple AirPods Max Wireless Over-Ear Headphones, Pro-Level Active Noise Cancellation, Transparency Mode, Personalised Spatial Audio, USB-C Charging, Bluetooth Headphones for iPhone - Purple",
     price: 429.99,
     offerPrice: 329.99,
-    image: [headphone],
+    image: [headphone, headphone2, headphone3, headphone4],
     category: "Headphone",
     date: 1738667310300,
     __v: 0,

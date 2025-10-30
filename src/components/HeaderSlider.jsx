@@ -9,7 +9,7 @@ const HeaderSlider = () => {
       offer: "Limited Time Offer — Save 30%",
       buttonText1: "Buy Now",
       buttonText2: "Learn More",
-      imgSrc: assets.headerslide_iphone17promax,
+      imgSrc: assets.iphone1,
     },
     {
       id: 2,
