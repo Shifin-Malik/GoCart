@@ -4,7 +4,7 @@ import { assets } from "../../assets/assets";
 import { IoIosFlash } from "react-icons/io";
 import { IoCartSharp } from "react-icons/io5";
 import HomeProducts from "../HomeProducts";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContextData } from "../../context/AppContext";
 
 function Product() {
@@ -12,6 +12,10 @@ function Product() {
   const { products } = useContext(AppContextData);
   const [firstImage, setFirstImage] = useState(null);
   const [productData, setProductData] = useState(null);
+  const navigate = useNavigate();
+  const addToCart = () => {
+    navigate("/addtocart");
+  };
 
   useEffect(() => {
     const product = products.find((p) => p._id === id);
@@ -98,7 +102,10 @@ function Product() {
             <hr className="bg-gray-600 my-6" />
 
             <div className="flex items-center mt-6 gap-4">
-              <button className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition rounded-lg font-bold flex justify-center items-center gap-2 cursor-pointer">
+              <button
+                onClick={addToCart}
+                className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition rounded-lg font-bold flex justify-center items-center gap-2 cursor-pointer"
+              >
                 <IoCartSharp size={20} /> Add to Cart
               </button>
               <button className="w-full py-3.5 rounded-lg bg-primary text-white hover:bg-blue-800 transition font-bold flex items-center justify-center gap-2 cursor-pointer">

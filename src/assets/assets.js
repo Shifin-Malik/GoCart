@@ -39,6 +39,8 @@ import logo from "./logo.png";
 import iphone1 from "./iphone1.png";
 import iphone2 from "./iphone2.png";
 import iphone3 from "./iphone3.png";
+import google from "./google.png";
+import apple from "./apple.png";
 
 export const assets = {
   user,
@@ -84,6 +86,8 @@ export const assets = {
   iphone2,
   iphone3,
   iphone2,
+  google,
+  apple,
 };
 
 export const productsDummyData = [

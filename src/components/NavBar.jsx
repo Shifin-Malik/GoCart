@@ -1,8 +1,12 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { assets } from "../assets/assets";
-
+import { NavLink, useNavigate } from "react-router-dom";
+import Login from "./Login";
+import { IoCartSharp } from "react-icons/io5";
 function NavBar() {
+  const navigate = useNavigate()
+  const addToCart = () => {
+    navigate('/addtocart')
+  }
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-20 py-3 border-b border-gray-200 text-secondary">
       <h1 className="text-secondary font-bold text-3xl fugaz-one-regular">
@@ -31,25 +35,12 @@ function NavBar() {
         ))}
       </div>
 
-      <div className="hidden sm:flex gap-4">
-        <button className="bg-primary w-36 h-10 rounded-3xl font-semibold text-white cursor-pointer">
-          Create Account
-        </button>
-        <img
-          src={assets.user}
-          className="rounded-full w-8 h-8 cursor-pointer"
-          alt="User Profile"
-        />
-      </div>
-
-      <div className="flex items-center gap-4 sm:hidden">
-        <button className="bg-primary w-32 h-10 rounded-3xl font-semibold text-sm text-white cursor-pointer">
-          Create Account
-        </button>
-        <img
-          src={assets.user}
-          className="rounded-full w-8 h-8 cursor-pointer"
-          alt="User Profile"
+      <div className="flex gap-4 items-center justify-center">
+        <Login />
+        <IoCartSharp
+          onClick={addToCart}
+          size={30}
+          className="w-10 h-10 bg-zinc-200 p-2 rounded-full"
         />
       </div>
     </nav>
