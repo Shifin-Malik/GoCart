@@ -9,12 +9,13 @@ import { AppContextData } from "../../context/AppContext";
 
 function Product() {
   const { id } = useParams();
-  const { products } = useContext(AppContextData);
+  const { products, addToCart } = useContext(AppContextData);
   const [firstImage, setFirstImage] = useState(null);
   const [productData, setProductData] = useState(null);
   const navigate = useNavigate();
-  const addToCart = () => {
-    navigate("/addtocart");
+  const handleClick = () => {
+    navigate("/GoCart/cart");
+    addToCart(productData._id);
   };
 
   useEffect(() => {
@@ -34,7 +35,6 @@ function Product() {
 
   return (
     <>
-      <NavBar />
       <div className="px-6 md:px-16 lg:px-32 pt-10 space-y-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           {/* Images */}
@@ -103,7 +103,7 @@ function Product() {
 
             <div className="flex items-center mt-6 gap-4">
               <button
-                onClick={addToCart}
+                onClick={handleClick}
                 className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition rounded-lg font-bold flex justify-center items-center gap-2 cursor-pointer"
               >
                 <IoCartSharp size={20} /> Add to Cart

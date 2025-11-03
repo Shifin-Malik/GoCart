@@ -2,15 +2,24 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Product from "./components/Product/Product";
-import AddToCart from "./pages/AddToCart";
+import Cart from "./pages/Cart";
+import ProductPage from "./pages/ProductPage";
+import NavBar from "./components/NavBar";
+import Support from "./pages/Support";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/GoCart" element={<Home />} />
-      <Route path="Addtocart" element={<AddToCart />} />
-      <Route path="/product/:id" element={<Product />} />
-    </Routes>
+    <div className="">
+      <NavBar />
+      <Routes>
+        <Route path="/GoCart" element={<Home />} />
+        <Route path="/GoCart/cart" element={<Cart />} />
+        <Route path="/GoCart/support" element={<Support />} />
+        <Route path="/GoCart/product" element={<ProductPage />} />
+        <Route path="/GoCart/product/:id" element={<Product />} />
+        <Route path="*" element={<h2>Page Not Found</h2>} />
+      </Routes>
+    </div>
   );
 }
 

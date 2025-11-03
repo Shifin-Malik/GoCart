@@ -10,7 +10,7 @@ const ProductCard = ({ product }) => {
   return (
     <div
       onClick={() => {
-        navigate(`/product/${product._id}`);
+        navigate(`/GoCart/product/${product._id}`);
         window.scrollTo(0, 0);
       }}
       className="flex flex-col items-start gap-0.5 max-w-[200px] w-full cursor-pointer"

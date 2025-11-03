@@ -37,11 +37,19 @@ const HeaderSlider = () => {
     },
     {
       id: 5,
-      title: "MacBook Pro M4 Edition",
+      title: "Apple Watch Series 11",
       offer: "Exclusive Offer — 15% Off",
       buttonText1: "Buy Now",
       buttonText2: "View Details",
       imgSrc: assets.headerslide_iwatch,
+    },
+    {
+      id: 6,
+      title: "Imac Pro M4 Edition",
+      offer: "Exclusive Offer — 15% Off",
+      buttonText1: "Buy Now",
+      buttonText2: "View Details",
+      imgSrc: assets.MYJG3,
     },
   ];
 

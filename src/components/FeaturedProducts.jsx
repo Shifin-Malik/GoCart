@@ -15,11 +15,11 @@ function FeaturedProducts() {
       </div>
 
       <div className="flex gap-10 mt-6 p-4 overflow-x-auto scrollbar-hide">
-        {featured.map((item) => (
+        {featured.map((item,idx) => (
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            key={item.id}
+            key={idx}
             className={`${
               item.id === 1
                 ? "bg-cover bg-center lg:min-w-[400px] min-w-[300px] h-[450px] rounded-lg flex flex-col justify-start p-6 text-[#EEEEEE] shadow-lg"
