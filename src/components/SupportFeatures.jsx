@@ -2,8 +2,7 @@ import React from "react";
 import * as motion from "motion/react-client";
 import { useContext } from "react";
 import { AppContextData } from "../context/AppContext";
-
-function Support() {
+function SupportFeatures() {
   const {support} = useContext(AppContextData)
   return (
     <div className="mt-16">
@@ -39,4 +38,4 @@ function Support() {
   );
 }
 
-export default Support;
+export default SupportFeatures;

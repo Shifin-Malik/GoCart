@@ -1,6 +1,6 @@
 import React from "react";
 import { assets } from "../assets/assets";
-
+import Footer from "../components/Footer";
 function Support() {
   const productSupport = [
     { id: 1, img: assets.iphonesupport, text: "Iphone" },
@@ -72,6 +72,7 @@ function Support() {
         </p>
         <img src={assets.care} className="w-full" alt="" />
       </div>
+      <Footer />
     </div>
   );
 }

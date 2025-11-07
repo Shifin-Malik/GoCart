@@ -1,95 +1,148 @@
 import React, { useState, useEffect, createContext } from "react";
-import {
-  productsDummyData,
-  featuredItems,
-  supportItems,
-} from "../assets/assets";
+import { featuredItems, supportItems } from "../assets/assets";
+import axios from "axios";
 
 export const AppContextData = createContext();
 
 export const AppContext = ({ children }) => {
-  const currency = import.meta.env.VITE_CURRENCY || "$";
+  const currency = import.meta.env.VITE_CURRENCY || "₹";
+
   const [products, setProducts] = useState([]);
   const [featured, setFeatured] = useState([]);
   const [support, setSupport] = useState([]);
+  const [cartItems, setCartItems] = useState([]); 
+  const [user, setUser] = useState(null);
 
-  const [cartItems, setCartItems] = useState({});
   const [formData, setFormData] = useState({
     userName: "",
     email: "",
     password: "",
   });
 
-  const fetchProductData = async () => {
-    setProducts(productsDummyData);
-  };
-
-  const addToCart = async (itemId) => {
-    let cartData = structuredClone(cartItems);
-    if (cartData[itemId]) {
-      cartData[itemId] += 1;
-    } else {
-      cartData[itemId] = 1;
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/products");
+      setProducts(res.data);
+    } catch (err) {
+      console.log("Error fetching products:", err);
     }
-    setCartItems(cartData);
-  };
-  const updateCartQuantity = async (itemId, quantity) => {
-    let cartData = structuredClone(cartItems);
-    if (quantity === 0) {
-      delete cartData[itemId];
-    } else {
-      cartData[itemId] = quantity;
-    }
-    setCartItems(cartData);
-  };
-
-  const getCartCount = () => {
-    let totalCount = 0;
-    for (const items in cartItems) {
-      if (cartItems[items] > 0) {
-        totalCount += cartItems[items];
-      }
-    }
-    return totalCount;
-  };
-
-  const getCartAmount = () => {
-    let totalAmount = 0;
-    for (const items in cartItems) {
-      let itemInfo = products.find((product) => product._id === items);
-      if (cartItems[items] > 0) {
-        totalAmount += itemInfo.offerPrice * cartItems[items];
-      }
-    }
-    return Math.floor(totalAmount * 100) / 100;
-  };
-
-  const fetchFeaturedItems = async () => {
-    setFeatured(featuredItems);
-  };
-  const fetchSupportItems = async () => {
-    setSupport(supportItems);
   };
 
   useEffect(() => {
-    fetchFeaturedItems();
-    fetchProductData();
-    fetchSupportItems();
+    fetchProducts();
+    setFeatured(featuredItems);
+    setSupport(supportItems);
+  }, []);
+ 
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) setUser(JSON.parse(savedUser));
   }, []);
 
+ 
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+
+      axios
+        .get(`http://localhost:3000/users?email=${user.email}`)
+        .then((res) => {
+          if (res.data.length > 0) {
+            const dbUser = res.data[0];
+            setCartItems(dbUser.cartProducts || []);
+          }
+        })
+        .catch((err) => console.log("Error loading user cart:", err));
+    } else {
+      localStorage.removeItem("user");
+      setCartItems([]);
+    }
+  }, [user]);
+
+ 
+  const saveUserCartToDB = async (userEmail, updatedCart) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/users?email=${userEmail}`
+      );
+      if (res.data.length > 0) {
+        const currentUser = res.data[0];
+        await axios.patch(`http://localhost:3000/users/${currentUser.id}`, {
+          cartProducts: updatedCart,
+        });
+        console.log("🛒 Cart synced to backend");
+      }
+    } catch (err) {
+      console.error("Error saving cart:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (user) saveUserCartToDB(user.email, cartItems);
+  }, [cartItems, user]);
+
+  const addToCart = (productId) => {
+    if (!user) return alert("Please login first!");
+
+    const existing = cartItems.find((item) => item._id === productId);
+
+    if (existing) {
+   
+      const updatedCart = cartItems.map((item) =>
+        item._id === productId
+          ? { ...item, quantity: (item.quantity || 1) + 1 }
+          : item
+      );
+      setCartItems(updatedCart);
+    } else {
+      
+      setCartItems([...cartItems, { _id: productId, quantity: 1 }]);
+    }
+  };
+
+ 
+  const updateCartQuantity = (productId, newQty) => {
+    if (newQty <= 0) return removeFromCart(productId);
+
+    const updatedCart = cartItems.map((item) =>
+      item._id === productId ? { ...item, quantity: newQty } : item
+    );
+    setCartItems(updatedCart);
+  };
+
+ 
+  const removeFromCart = (productId) => {
+    setCartItems(cartItems.filter((item) => item._id !== productId));
+  };
+
+  const getCartCount = () => {
+    return cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
+  };
+
+  const getCartAmount = () => {
+    return cartItems.reduce((total, item) => {
+      const product = products.find((p) => p._id === item._id);
+      if (!product) return total;
+      return total + product.offerPrice * (item.quantity || 1);
+    }, 0);
+  };
+  
   const value = {
     currency,
     products,
     featured,
     support,
-    formData,
-    setFormData,
     cartItems,
     setCartItems,
     addToCart,
-    updateCartQuantity,
+    removeFromCart,
     getCartCount,
+    user,
+    setUser,
+    formData,
+    setFormData,
     getCartAmount,
+    updateCartQuantity,
   };
 
   return (

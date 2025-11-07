@@ -1,62 +1,130 @@
 import React, { useState, useContext } from "react";
-import { assets } from "../assets/assets";
 import { AppContextData } from "../context/AppContext";
+import swal from "sweetalert";
+import axios from "axios";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
-
-  const {formData, setFormData} = useContext(AppContextData)
-
+  const { formData, setFormData, setUser } = useContext(AppContextData);
+  const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(true); 
+  const [isSignUp, setIsSignUp] = useState(true);
+
   const handleOpen = () => setOpen(!open);
   const handleToggleMode = () => setIsSignUp(!isSignUp);
-  
-    const handleChange = (e) => {
-      const {name, value} = e.target;
-      setFormData((prev => ({...prev, [name] : value})));
-    };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (isSignUp) {
-    try {
-      const response = await fetch("http://localhost:3000/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+    // Common Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple email pattern
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/; // at least 6 chars, 1 letter + 1 number
 
-      if (!response.ok) throw new Error("Signup failed");
-
-      const data = await response.json();
-      console.log("✅ User signed up:", data);
-      alert("Signup successful!");
-      setOpen(false);
-    } catch (error) {
-      console.error("❌ Error signing up:", error);
-    }
-  } else {
-    
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users?email=${formData.email}&password=${formData.password}`
-      );
-      const users = await response.json();
-
-      if (users.length > 0) {
-        console.log("✅ Login successful:", users[0]);
-        alert(`Welcome back, ${users[0].userName}!`);
-        setOpen(false);
-      } else {
-        alert("Invalid email or password!");
+    // ----------------------------
+    // SIGNUP LOGIC
+    // ----------------------------
+    if (isSignUp) {
+      if (!formData.userName || !formData.email || !formData.password) {
+        return swal(
+          "⚠️ Fill all fields",
+          "Please complete the form",
+          "warning"
+        );
       }
-    } catch (error) {
-      console.error("❌ Error logging in:", error);
+
+      if (!emailRegex.test(formData.email)) {
+        return swal(
+          "⚠️ Invalid Email",
+          "Please enter a valid email address",
+          "warning"
+        );
+      }
+
+      if (!passwordRegex.test(formData.password)) {
+        return swal(
+          "⚠️ Weak Password",
+          "Password must be at least 6 characters and contain at least one number and one letter.",
+          "warning"
+        );
+      }
+
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/users",
+          formData
+        );
+        const data = response.data;
+
+        setUser(data);
+        localStorage.setItem("user", JSON.stringify(data));
+        setFormData({ userName: "", email: "", password: "" });
+
+        swal(
+          "✅ Signup Successful!",
+          "Your account has been created.",
+          "success"
+        );
+        setOpen(false);
+      } catch (error) {
+        swal("❌ Signup Failed!", "Something went wrong.", "error");
+        console.error("Error signing up:", error);
+      }
+    } else {
+      // ----------------------------
+      // LOGIN LOGIC
+      // ----------------------------
+      if (!formData.email || !formData.password) {
+        return swal(
+          "⚠️ Missing Fields",
+          "Please enter both email and password.",
+          "warning"
+        );
+      }
+
+      if (!emailRegex.test(formData.email)) {
+        return swal(
+          "⚠️ Invalid Email",
+          "Please enter a valid email address",
+          "warning"
+        );
+      }
+
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/users?email=${formData.email}&password=${formData.password}`
+        );
+        const users = response.data;
+
+        if (users.length > 0) {
+          const user = users[0];
+          setUser(user);
+          localStorage.setItem("user", JSON.stringify(user));
+          setFormData({ userName: "", email: "", password: "" });
+
+          swal(
+            "✅ Login Successful!",
+            `Welcome back, ${user.userName}!`,
+            "success"
+          );
+          setOpen(false);
+        } else {
+          swal(
+            "❌ Invalid Credentials",
+            "Email or Password is incorrect",
+            "error"
+          );
+        }
+      } catch (error) {
+        swal("⚠️ Login Error", "Server not responding", "warning");
+        console.error("Error logging in:", error);
+      }
     }
-  }
-};
+  };
 
   return (
     <>
@@ -69,7 +137,7 @@ function Login() {
 
       {open && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-10">
-          <div className="bg-black/90 rounded-2xl w-86 lg:w-full max-w-md shadow-2xl p-6 relative">
+          <div className="bg-black/90 rounded-2xl max-w-md w-full shadow-2xl p-6 relative">
             <button
               onClick={handleOpen}
               className="absolute top-3 right-3 text-gray-500 hover:text-white text-2xl bg-gray-200/10 w-8 h-8 rounded-full text-center cursor-pointer"
@@ -83,65 +151,47 @@ function Login() {
               </h1>
 
               {isSignUp && (
-                <div className="flex flex-col items-center justify-center gap-3 mt-8">
-                  <input
-                    type="text"
-                    name="userName"
-                    value={formData.userName}
-                    onChange={handleChange}
-                    placeholder="User name"
-                    className="w-full h-10 bg-gray-200/10 rounded-lg placeholder-white text-white pl-2 placeholder:text-sm"
-                  />
-                </div>
+                <input
+                  type="text"
+                  name="userName"
+                  value={formData.userName}
+                  onChange={handleChange}
+                  placeholder="User name"
+                  className="mt-6 w-full h-10 bg-gray-200/10 rounded-lg placeholder-white text-white pl-2 placeholder:text-sm"
+                />
               )}
-              <div className="mt-4 flex flex-col gap-2">
+
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                className="mt-4 w-full h-10 bg-gray-200/10 rounded-lg placeholder-white text-white pl-2 placeholder:text-sm"
+              />
+              <div className="relative mt-2">
                 <input
-                  type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  placeholder="Enter your email"
-                  className="w-full h-10 bg-gray-200/10 rounded-lg placeholder-white placeholder:text-sm text-white pl-2"
-                />
-                <input
+                  type={showPassword ? "text" : "password"}
                   name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
                   placeholder="Enter your password"
-                  className="w-full h-10 bg-gray-200/10 rounded-lg placeholder-white text-white pl-2 placeholder:text-sm"
+                  className="w-full h-10 bg-gray-200/10 rounded-lg placeholder-white text-white pl-2 pr-10 placeholder:text-sm"
                 />
-
-                <button type="submit" className="w-full h-10 bg-white font-bold rounded-lg mt-4 cursor-pointer">
-                  {isSignUp ? "Create account" : "Sign in"}
-                </button>
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80 cursor-pointer"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
 
-              <div className="flex gap-4 mt-4 items-center">
-                <div className="md:w-1/3 w-1/4 bg-primary h-1"></div>
-                <h1 className="text-xs text-gray-200/80">OR SIGN IN WITH</h1>
-                <div className="md:w-1/3 w-1/4 bg-primary h-1"></div>
-              </div>
-
-              <div className="flex gap-3 mt-4">
-                <div className="w-1/2 bg-gray-200/10 rounded-md h-10 flex items-center justify-center">
-                  <img
-                    src={assets.google}
-                    width={20}
-                    height={20}
-                    alt="Google"
-                  />
-                </div>
-                <div className="w-1/2 bg-gray-200/10 rounded-md h-10 flex items-center justify-center">
-                  <img
-                    src={assets.apple}
-                    width={30}
-                    height={30}
-                    alt="Apple"
-                    className="bg-white rounded-full w-6 h-6 p-0.5"
-                  />
-                </div>
-              </div>
+              <button
+                type="submit"
+                className="w-full h-10 bg-white font-bold rounded-lg mt-4 cursor-pointer"
+              >
+                {isSignUp ? "Create account" : "Sign in"}
+              </button>
 
               <p className="text-xs text-gray-200/70 text-center pt-6">
                 {isSignUp ? (

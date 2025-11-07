@@ -18,7 +18,11 @@ const ProductCard = ({ product }) => {
       <div className="group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center overflow-hidden">
         <img
           className="group-hover:scale-105 transition-transform object-cover w-full h-full"
-          src={product.image?.[0]}
+          src={
+            product.image?.[0].startsWith("http")
+              ? product.image[0]
+              : assets[product.image[0]]
+          }
           alt={product.name}
           width={800}
           height={800}

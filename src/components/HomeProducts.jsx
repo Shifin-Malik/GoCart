@@ -2,15 +2,14 @@ import React, { useContext, useState } from "react";
 import { AppContextData } from "../context/AppContext";
 import ProductCard from "./ProductCard";
 import { IoSearch } from "react-icons/io5";
-
+import Footer from "./Footer";
 function HomeProducts() {
   const { products } = useContext(AppContextData);
   const [searchTerm, setSearchTerm] = useState("");
-
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  console.log(products);
   return (
     <div className="flex flex-col items-center px-4 md:px-8 pt-8 w-full">
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full">
@@ -48,6 +47,7 @@ function HomeProducts() {
           </p>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

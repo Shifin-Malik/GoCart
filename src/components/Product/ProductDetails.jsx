@@ -6,16 +6,18 @@ import { IoCartSharp } from "react-icons/io5";
 import HomeProducts from "../HomeProducts";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContextData } from "../../context/AppContext";
-
-function Product() {
+import { toast } from "react-hot-toast";
+function ProductDetails() {
   const { id } = useParams();
   const { products, addToCart } = useContext(AppContextData);
   const [firstImage, setFirstImage] = useState(null);
   const [productData, setProductData] = useState(null);
   const navigate = useNavigate();
+
   const handleClick = () => {
     navigate("/GoCart/cart");
     addToCart(productData._id);
+    toast.success("Add cart successfully!");
   };
 
   useEffect(() => {
@@ -37,13 +39,20 @@ function Product() {
     <>
       <div className="px-6 md:px-16 lg:px-32 pt-10 space-y-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          {/* Images */}
           <div className="px-5 lg:px-16 xl:px-20">
             <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4">
               <img
-                src={firstImage || productData.image?.[0]}
+                src={
+                  firstImage
+                    ? firstImage.startsWith("http")
+                      ? firstImage
+                      : assets[firstImage.replace(".png", "")]
+                    : productData.image?.[0].startsWith("http")
+                    ? productData.image[0]
+                    : assets[productData.image[0].replace(".png", "")]
+                }
                 alt={productData.name}
-                className="w-full h-auto object-cover mix-blend-multiply transition delay-150 duration-150 hover:transition-y-1 hover:scale-105"
+                className="w-full h-auto object-cover mix-blend-multiply transition delay-150 duration-150 hover:scale-105"
               />
             </div>
 
@@ -55,7 +64,11 @@ function Product() {
                   className="cursor-pointer rounded-lg overflow-hidden bg-gray-500/10 flex justify-center items-center"
                 >
                   <img
-                    src={img}
+                    src={
+                      img.startsWith("http")
+                        ? img
+                        : assets[img.replace(".png", "")]
+                    }
                     alt="thumbnail"
                     className="w-full h-auto object-cover mix-blend-multiply"
                   />
@@ -91,10 +104,10 @@ function Product() {
             <p className="text-gray-600 mt-3">{productData.description}</p>
 
             <p className="text-3xl font-medium mt-6">
-              ${productData.offerPrice}
+              ₹{productData.offerPrice}
               {productData.price && (
                 <span className="text-base font-normal text-gray-800/60 line-through ml-2">
-                  ${productData.price}
+                  ₹{productData.price}
                 </span>
               )}
             </p>
@@ -108,7 +121,10 @@ function Product() {
               >
                 <IoCartSharp size={20} /> Add to Cart
               </button>
-              <button className="w-full py-3.5 rounded-lg bg-primary text-white hover:bg-blue-800 transition font-bold flex items-center justify-center gap-2 cursor-pointer">
+              <button
+                onClick={handleClick}
+                className="w-full py-3.5 rounded-lg bg-primary text-white hover:bg-blue-800 transition font-bold flex items-center justify-center gap-2 cursor-pointer"
+              >
                 <IoIosFlash size={20} /> Buy now
               </button>
             </div>
@@ -121,4 +137,4 @@ function Product() {
   );
 }
 
-export default Product;
+export default ProductDetails;

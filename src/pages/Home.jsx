@@ -1,7 +1,7 @@
 import React from "react";
 import HeaderSlider from "../components/HeaderSlider";
 import FeaturedProducts from "../components/FeaturedProducts";
-import Support from "../components/Support";
+import Support from "../components/SupportFeatures";
 import Footer from "../components/Footer";
 import NewsLetter from "../components/NewsLatter";
 

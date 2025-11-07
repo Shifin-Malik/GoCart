@@ -2,11 +2,16 @@ import React, { useContext } from "react";
 import OrderSummary from "../components/Product/OrderSummary";
 import { AppContextData } from "../context/AppContext";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
-
+import { assets } from "../assets/assets";
 function Cart() {
-  const { products, cartItems, addToCart, updateCartQuantity, getCartCount } =
-    useContext(AppContextData);
-
+  const {
+    products,
+    cartItems,
+    addToCart,
+    updateCartQuantity,
+    getCartCount,
+    removeFromCart,
+  } = useContext(AppContextData);
   return (
     <div>
       <div className="p-4 w-full">
@@ -39,50 +44,49 @@ function Cart() {
                 </thead>
 
                 <tbody>
-                  {Object.keys(cartItems).map((itemId) => {
-                    const product = products.find((p) => p._id === itemId);
+                  {cartItems.map((cartItem, index) => {
+                    const product = products.find(
+                      (p) => p._id === cartItem._id
+                    );
+                    if (!product) return null;
 
-                    if (!product || cartItems[itemId] <= 0) return null;
-
-                    const quantity = cartItems[itemId];
+                    const quantity = cartItem.quantity || 1;
                     const subtotal = (product.offerPrice * quantity).toFixed(2);
 
                     return (
-                      <tr key={itemId} className="border-b border-gray-200">
-                        {/* Product Info */}
+                      <tr key={index} className="border-b border-gray-200">
                         <td className="flex items-center gap-4 py-4 px-2">
-                          <div>
-                            <div className="rounded-lg overflow-hidden bg-gray-500/10 p-2">
-                              <img
-                                src={product.image[0]}
-                                alt={product.name}
-                                className="w-16 h-auto object-cover mix-blend-multiply"
-                              />
-                            </div>
-                            <button
-                              className="md:hidden text-xs text-primary mt-1"
-                              onClick={() => updateCartQuantity(product._id, 0)}
-                            >
-                              Remove
-                            </button>
+                          <div className="rounded-lg overflow-hidden bg-gray-500/10 p-2">
+                            <img
+                              src={
+                                product.image[0].startsWith("http")
+                                  ? product.image[0]
+                                  : assets[
+                                      product.image[0]
+                                        .replace(".png", "")
+                                        .replace(".jpg", "")
+                                    ]
+                              }
+                              alt={product.name}
+                              className="w-16 h-auto object-cover mix-blend-multiply"
+                            />
                           </div>
-                          <div className="text-sm hidden md:block">
+
+                          <div className="text-sm">
                             <p className="text-gray-800">{product.name}</p>
                             <button
                               className="text-xs text-primary mt-1"
-                              onClick={() => updateCartQuantity(product._id, 0)}
+                              onClick={() => removeFromCart(product._id)}
                             >
                               Remove
                             </button>
                           </div>
                         </td>
 
-                        {/* Price */}
                         <td className="py-4 px-2 text-gray-600">
-                          ${product.offerPrice}
+                          ₹{product.offerPrice}
                         </td>
 
-                        {/* Quantity Controls */}
                         <td className="py-4 px-2">
                           <div className="flex items-center gap-2">
                             <button
@@ -92,6 +96,7 @@ function Cart() {
                             >
                               <IoMdArrowDropleft className="text-xl text-gray-600 hover:text-primary" />
                             </button>
+
                             <input
                               type="number"
                               value={quantity}
@@ -104,14 +109,14 @@ function Cart() {
                               className="w-10 border text-center rounded"
                               min="1"
                             />
+
                             <button onClick={() => addToCart(product._id)}>
                               <IoMdArrowDropright className="text-xl text-gray-600 hover:text-primary" />
                             </button>
                           </div>
                         </td>
 
-                        {/* Subtotal */}
-                        <td className="py-4 px-2 text-gray-600">${subtotal}</td>
+                        <td className="py-4 px-2 text-gray-600">₹{subtotal}</td>
                       </tr>
                     );
                   })}
@@ -127,7 +132,6 @@ function Cart() {
             </button>
           </div>
 
-          {/* Order Summary Section */}
           <div className="">
             <OrderSummary />
           </div>
