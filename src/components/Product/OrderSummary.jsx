@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const OrderSummary = () => {
   const navigate = useNavigate();
+
   const {
     currency,
     getCartCount,
@@ -15,8 +16,9 @@ const OrderSummary = () => {
     setCartItems,
   } = useContext(AppContextData);
 
-  const tax = Math.floor(getCartAmount() * 0.01);
-  const totalAmount = getCartAmount() + tax;
+  const tax = Math.floor(getCartAmount() * 0.005);
+  const DeliveryFree = 40;
+  const totalAmount = getCartAmount() + tax + DeliveryFree;
 
   const createOrder = async () => {
     if (!cartItems.length) {
@@ -32,9 +34,15 @@ const OrderSummary = () => {
         `http://localhost:3000/users?email=${user.email}`
       );
       const dbUser = res.data[0];
+      console.log(dbUser);
+
+      const ordersWithDate = cartItems.map((item) => ({
+        ...item,
+        date: new Date().toLocaleString(),
+      }));
 
       await axios.patch(`http://localhost:3000/users/${dbUser.id}`, {
-        prurchase: [...(dbUser.prurchase || []), ...cartItems],
+        prurchase: [...(dbUser.prurchase || []), ...ordersWithDate],
         cartProducts: [],
       });
 
@@ -63,9 +71,16 @@ const OrderSummary = () => {
           <p className="text-gray-600">Shipping</p>
           <p className="font-medium">Free</p>
         </div>
+        <div className="flex justify-between">
+          <p className="text-gray-600">Delivery free</p>
+          <p className="font-medium">
+            {currency}
+            {DeliveryFree}
+          </p>
+        </div>
 
         <div className="flex justify-between">
-          <p className="text-gray-600">Tax (1%)</p>
+          <p className="text-gray-600">Tax (0.5%)</p>
           <p className="font-medium">
             {currency}
             {tax}

@@ -37,7 +37,7 @@ function NavBar() {
         </h1>
       </Link>
 
-     {/* Nav - Link = Home, Products, Support */}
+      {/* Nav - Link = Home, Products, Support */}
       <div className="hidden md:flex items-center gap-4 lg:gap-8 font-bold">
         {links.map((link) => (
           <NavLink
@@ -45,7 +45,9 @@ function NavBar() {
             to={link.path}
             end={link.name === "Home"}
             className={({ isActive }) =>
-              `transition ${isActive ? "text-blue-500 border-b-2" : "text-black"}`
+              `transition ${
+                isActive ? "text-blue-500 border-b-2" : "text-black"
+              }`
             }
           >
             {link.name}
@@ -60,7 +62,9 @@ function NavBar() {
               className="flex items-center gap-2 cursor-pointer"
               onClick={toggleDropdown}
             >
-              <span className="text-secondary font-bold">Hi, {user.userName}</span>
+              <h2 className="text-secondary font-bold text-xl">
+                Hi, {user.userName}
+              </h2>
               <img
                 src={assets.user}
                 alt="User"
@@ -87,7 +91,6 @@ function NavBar() {
           <Login />
         )}
 
-  
         <div className="relative cursor-pointer" onClick={addToCart}>
           <IoCartSharp
             size={30}

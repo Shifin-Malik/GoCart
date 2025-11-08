@@ -60,8 +60,15 @@ import airpodssupport from "./airpodssupport.png";
 import visionsupport from "./visionsupport.png";
 import support from "./support.png";
 import care from "./care.png";
-
+import air1 from "./air1.png";
+import air2 from "./air2.png";
+import air3 from "./air3.png"
+import air4 from "./air3.png"
 export const assets = {
+  air1,
+  air2,
+  air3,
+  air4,
   visionsupport,
   iphonesupport,
   iwatchsupport,

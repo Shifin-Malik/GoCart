@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 import { AppContextData } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ product }) => {
+const ProductCard = React.memo(({ product }) => {
   const navigate = useNavigate();
   const { currency } = useContext(AppContextData);
 
@@ -18,11 +18,7 @@ const ProductCard = ({ product }) => {
       <div className="group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center overflow-hidden">
         <img
           className="group-hover:scale-105 transition-transform object-cover w-full h-full"
-          src={
-            product.image?.[0].startsWith("http")
-              ? product.image[0]
-              : assets[product.image[0]]
-          }
+          src={assets[product.image[0]]}
           alt={product.name}
           width={800}
           height={800}
@@ -51,6 +47,6 @@ const ProductCard = ({ product }) => {
       </div>
     </div>
   );
-};
+});
 
 export default ProductCard;

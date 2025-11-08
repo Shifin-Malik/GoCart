@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
 import OrderSummary from "../components/Product/OrderSummary";
 import { AppContextData } from "../context/AppContext";
-import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
+import { FaPlus, FaMinus } from "react-icons/fa6";
 import { assets } from "../assets/assets";
+import { useNavigate, Link } from "react-router-dom";
+import EmptyCart from "/public/Lottie/EmptyCart.json";
+import Lottie from "lottie-react";
 function Cart() {
   const {
     products,
@@ -12,6 +15,34 @@ function Cart() {
     getCartCount,
     removeFromCart,
   } = useContext(AppContextData);
+
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/GoCart/product");
+  };
+
+  console.log(cartItems);
+
+  if (cartItems.length === 0) {
+    return (
+      <div className="flex flex-col items-center gap-8 md:gap-4">
+        <Lottie className="w-80 h-80" animationData={EmptyCart} />
+        <h1 className="text-3xl font-semibold text-secondary">
+          Your Cart Is Empty
+        </h1>
+        <p className="font-semibold text-secondary text-center">
+          Looks like you haven't added anything to your cart yet. Start
+          exploring products and add your favorites!
+        </p>
+        <Link
+          to="/GoCart/product"
+          className=" bg-primary text-white rounded-lg w-40 h-12 text-center flex justify-center items-center font-bold"
+        >
+          Start Shopping
+        </Link>
+      </div>
+    );
+  }
   return (
     <div>
       <div className="p-4 w-full">
@@ -61,11 +92,7 @@ function Cart() {
                               src={
                                 product.image[0].startsWith("http")
                                   ? product.image[0]
-                                  : assets[
-                                      product.image[0]
-                                        .replace(".png", "")
-                                        .replace(".jpg", "")
-                                    ]
+                                  : assets[product.image[0]]
                               }
                               alt={product.name}
                               className="w-16 h-auto object-cover mix-blend-multiply"
@@ -94,7 +121,7 @@ function Cart() {
                                 updateCartQuantity(product._id, quantity - 1)
                               }
                             >
-                              <IoMdArrowDropleft className="text-xl text-gray-600 hover:text-primary" />
+                              <FaMinus className="text-xl text-gray-600 hover:text-primary bg-zinc-200 rounded-full w-5 h-5 p-1" />
                             </button>
 
                             <input
@@ -111,7 +138,7 @@ function Cart() {
                             />
 
                             <button onClick={() => addToCart(product._id)}>
-                              <IoMdArrowDropright className="text-xl text-gray-600 hover:text-primary" />
+                              <FaPlus className="text-xl text-gray-600 hover:text-primary bg-zinc-200 rounded-full w-5 h-5 p-1" />
                             </button>
                           </div>
                         </td>
@@ -125,7 +152,7 @@ function Cart() {
             </div>
 
             <button
-              onClick={() => (window.location.href = "/GoCart/product")}
+              onClick={handleClick}
               className="flex items-center mt-6 gap-2 text-primary hover:underline"
             >
               ← Continue Shopping

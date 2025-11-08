@@ -9,7 +9,6 @@ function HomeProducts() {
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log(products);
   return (
     <div className="flex flex-col items-center px-4 md:px-8 pt-8 w-full">
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full">

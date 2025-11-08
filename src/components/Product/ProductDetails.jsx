@@ -9,16 +9,22 @@ import { AppContextData } from "../../context/AppContext";
 import { toast } from "react-hot-toast";
 function ProductDetails() {
   const { id } = useParams();
-  const { products, addToCart } = useContext(AppContextData);
+  const { products, addToCart, user } = useContext(AppContextData);
   const [firstImage, setFirstImage] = useState(null);
   const [productData, setProductData] = useState(null);
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/GoCart/cart");
-    addToCart(productData._id);
-    toast.success("Add cart successfully!");
+    if (!user) {
+      swal("You must login first", "Add items before Cart!", "warning");
+    } else {
+      navigate("/GoCart/cart");
+      addToCart(productData._id);
+      toast.success("Add cart successfully!");
+    }
   };
+
+  console.log(user);
 
   useEffect(() => {
     const product = products.find((p) => p._id === id);
@@ -64,11 +70,7 @@ function ProductDetails() {
                   className="cursor-pointer rounded-lg overflow-hidden bg-gray-500/10 flex justify-center items-center"
                 >
                   <img
-                    src={
-                      img.startsWith("http")
-                        ? img
-                        : assets[img.replace(".png", "")]
-                    }
+                    src={!img ? img : assets[img]}
                     alt="thumbnail"
                     className="w-full h-auto object-cover mix-blend-multiply"
                   />

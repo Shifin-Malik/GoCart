@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import { featuredItems, supportItems } from "../assets/assets";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export const AppContextData = createContext();
 
@@ -10,7 +11,7 @@ export const AppContext = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [featured, setFeatured] = useState([]);
   const [support, setSupport] = useState([]);
-  const [cartItems, setCartItems] = useState([]); 
+  const [cartItems, setCartItems] = useState([]);
   const [user, setUser] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -33,17 +34,15 @@ export const AppContext = ({ children }) => {
     setFeatured(featuredItems);
     setSupport(supportItems);
   }, []);
- 
+
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) setUser(JSON.parse(savedUser));
   }, []);
 
- 
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
-
       axios
         .get(`http://localhost:3000/users?email=${user.email}`)
         .then((res) => {
@@ -59,7 +58,6 @@ export const AppContext = ({ children }) => {
     }
   }, [user]);
 
- 
   const saveUserCartToDB = async (userEmail, updatedCart) => {
     try {
       const res = await axios.get(
@@ -70,7 +68,7 @@ export const AppContext = ({ children }) => {
         await axios.patch(`http://localhost:3000/users/${currentUser.id}`, {
           cartProducts: updatedCart,
         });
-        console.log("🛒 Cart synced to backend");
+        console.log("Cart synced to backend");
       }
     } catch (err) {
       console.error("Error saving cart:", err);
@@ -82,12 +80,11 @@ export const AppContext = ({ children }) => {
   }, [cartItems, user]);
 
   const addToCart = (productId) => {
-    if (!user) return alert("Please login first!");
+    if (!user) return toast("Please login first!");
 
     const existing = cartItems.find((item) => item._id === productId);
 
     if (existing) {
-   
       const updatedCart = cartItems.map((item) =>
         item._id === productId
           ? { ...item, quantity: (item.quantity || 1) + 1 }
@@ -95,12 +92,10 @@ export const AppContext = ({ children }) => {
       );
       setCartItems(updatedCart);
     } else {
-      
       setCartItems([...cartItems, { _id: productId, quantity: 1 }]);
     }
   };
 
- 
   const updateCartQuantity = (productId, newQty) => {
     if (newQty <= 0) return removeFromCart(productId);
 
@@ -110,9 +105,9 @@ export const AppContext = ({ children }) => {
     setCartItems(updatedCart);
   };
 
- 
   const removeFromCart = (productId) => {
-    setCartItems(cartItems.filter((item) => item._id !== productId));
+    const removeProduct = cartItems.filter((item) => item._id !== productId);
+    setCartItems(removeProduct);
   };
 
   const getCartCount = () => {
@@ -126,7 +121,7 @@ export const AppContext = ({ children }) => {
       return total + product.offerPrice * (item.quantity || 1);
     }, 0);
   };
-  
+
   const value = {
     currency,
     products,
