@@ -6,6 +6,7 @@ import Cart from "./pages/Cart";
 import ProductPage from "./pages/ProductPage";
 import NavBar from "./components/NavBar";
 import Support from "./pages/Support";
+import NotFound from "./pages/NotFound";
 
 const LazyOrderHistory = lazy(() => import("./pages/OrderHistory"));
 
@@ -21,7 +22,7 @@ function App() {
           <Route path="/GoCart/product" element={<ProductPage />} />
           <Route path="/GoCart/orderPlace" element={<LazyOrderHistory />} />
           <Route path="/GoCart/product/:id" element={<ProductDetails />} />
-          <Route path="*" element={<h2>Page Not Found</h2>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </div>

@@ -12,7 +12,7 @@ function OrderHistory() {
     if (!user) return;
     axios
       .get(`http://localhost:3000/users?email=${user.email}`)
-      .then((res) => setOrders(res.data[0].prurchase || []))
+      .then((res) => setOrders(res.data[0].purchase || []))
       .catch((err) => console.log(err));
   }, [user]);
 
@@ -38,38 +38,60 @@ function OrderHistory() {
         Your Orders
       </h1>
 
-      <div className="flex flex-col gap-2 ">
-        {orders.map((order, index) => {
-          const product = products.find((p) => p._id === order._id);
-          if (!product) return null;
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white shadow rounded-lg overflow-hidden">
+          <thead className="bg-gray-200 text-gray-700">
+            <tr>
+              <th className="px-4 py-3 text-center">No</th>
+              <th className="px-4 py-3 text-left">Product</th>
+              <th className="px-4 py-3 text-center">Quantity</th>
+              <th className="px-4 py-3 text-center">Price</th>
+              <th className="px-4 py-3 text-center">Date</th>
+              <th className="px-4 py-3 text-center">Status</th>
+            </tr>
+          </thead>
 
-          const productImage = assets[product.image[0]];
-          return (
-            <div
-              key={index}
-              className="flex items-center justify-between bg-gray-100 p-2 rounded-xl px-20"
-            >
-              <div className="flex items-center gap-4">
-                <img
-                  src={productImage}
-                  alt={product.name}
-                  className="w-20 h-20 rounded-lg object-cover"
-                />
-                <div>
-                  <p className="font-medium text-secondary">{product.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {order.date || "Date not available"}
-                  </p>
-                </div>
-              </div>
+          <tbody>
+            {orders.map((order, index) => {
+              const product = products.find((p) => p._id === order._id);
+              if (!product) return null;
+              const productImage = product.image[0].startsWith("http")
+                ? product.image[0]
+                : assets[product.image[0]];
 
-              <p className="font-semibold text-secondary">
-                ₹{product.offerPrice}
-              </p>
-              <p className="text-green-600 font-semibold">✅ Successful</p>
-            </div>
-          );
-        })}
+              return (
+                <tr key={index} className="border-b hover:bg-gray-50">
+                  <td className="px-4 py-3 text-center font-semibold text-gray-700">
+                    {index + 1}
+                  </td>
+
+                  <td className="px-4 py-3 flex items-center gap-3">
+                    <img
+                      src={productImage}
+                      alt={product.name}
+                      className="w-14 h-14 rounded-lg object-cover"
+                    />
+                    <p className="font-medium text-secondary">{product.name}</p>
+                  </td>
+
+                  <td className="px-4 py-3 text-center">{order.quantity}</td>
+
+                  <td className="px-4 py-3 text-center font-medium text-secondary">
+                    ₹{product.offerPrice * order.quantity}
+                  </td>
+
+                  <td className="px-4 py-3 text-center text-gray-600">
+                    {order.date}
+                  </td>
+
+                  <td className="px-4 py-3 text-center text-green-600 font-semibold">
+                    ✅ Successful
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

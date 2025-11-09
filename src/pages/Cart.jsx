@@ -21,8 +21,6 @@ function Cart() {
     navigate("/GoCart/product");
   };
 
-  console.log(cartItems);
-
   if (cartItems.length === 0) {
     return (
       <div className="flex flex-col items-center gap-8 md:gap-4">

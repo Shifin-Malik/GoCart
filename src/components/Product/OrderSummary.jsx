@@ -37,12 +37,14 @@ const OrderSummary = () => {
       console.log(dbUser);
 
       const ordersWithDate = cartItems.map((item) => ({
-        ...item,
+        _id: item._id,
+        quantity: item.quantity || 1,
+        price: item.offerPrice,
         date: new Date().toLocaleString(),
       }));
 
       await axios.patch(`http://localhost:3000/users/${dbUser.id}`, {
-        prurchase: [...(dbUser.prurchase || []), ...ordersWithDate],
+        purchase: [...(dbUser.purchase || []), ...ordersWithDate],
         cartProducts: [],
       });
 

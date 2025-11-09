@@ -7,13 +7,13 @@ export const AppContextData = createContext();
 
 export const AppContext = ({ children }) => {
   const currency = import.meta.env.VITE_CURRENCY || "₹";
-
+  
   const [products, setProducts] = useState([]);
   const [featured, setFeatured] = useState([]);
   const [support, setSupport] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [user, setUser] = useState(null);
-
+  const [purchaseCount, setPurchaseCount] = useState(0)
   const [formData, setFormData] = useState({
     userName: "",
     email: "",
@@ -28,6 +28,8 @@ export const AppContext = ({ children }) => {
       console.log("Error fetching products:", err);
     }
   };
+
+
 
   useEffect(() => {
     fetchProducts();
@@ -138,6 +140,8 @@ export const AppContext = ({ children }) => {
     setFormData,
     getCartAmount,
     updateCartQuantity,
+    purchaseCount,
+    setPurchaseCount
   };
 
   return (
