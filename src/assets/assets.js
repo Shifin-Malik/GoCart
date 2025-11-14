@@ -133,6 +133,7 @@ export const assets = {
   MYJG3,
   MYJG31,
   care,
+  
 };
 
 export const featuredItems = [

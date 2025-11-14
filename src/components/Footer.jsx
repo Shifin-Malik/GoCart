@@ -3,7 +3,7 @@ import { FaXTwitter, FaInstagram, FaLinkedin, FaGithub } from "react-icons/fa6";
 
 function Footer() {
   return (
-    <div className="h-80 w-full p-4 md:p-10 px-6 md:px-16">
+    <div className="h-80 w-full p-4  px-2">
       <div className="border border-zinc-200 shadow-lg rounded-2xl p-6 md:p-10">
         <div className="flex flex-col justify-center items-center gap-1 w-full">
           <h1 className="text-secondary font-semibold text-2xl text-center fugaz-one-regular">
@@ -30,7 +30,10 @@ function Footer() {
           >
             <FaLinkedin size={18} />
           </a>
-          <a href="https://github.com/Shifin-Malik/" className="hover:text-gray-900 transition-colors">
+          <a
+            href="https://github.com/Shifin-Malik/"
+            className="hover:text-gray-900 transition-colors"
+          >
             <FaGithub size={18} />
           </a>
         </div>

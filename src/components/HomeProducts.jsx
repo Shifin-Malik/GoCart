@@ -1,14 +1,40 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo } from "react";
 import { AppContextData } from "../context/AppContext";
 import ProductCard from "./ProductCard";
-import { IoSearch } from "react-icons/io5";
 import Footer from "./Footer";
+import { IoSearch, IoFilter } from "react-icons/io5";
+
 function HomeProducts() {
   const { products } = useContext(AppContextData);
+
   const [searchTerm, setSearchTerm] = useState("");
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("All");
+
+  const categories = useMemo(() => {
+    const cats = products.map((p) => p.category).filter(Boolean);
+    return ["All", ...new Set(cats)];
+  }, [products]);
+
+  const filteredProducts = useMemo(() => {
+    let filtered = products.filter((p) =>
+      p.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (categoryFilter !== "All") {
+      filtered = filtered.filter((p) => p.category === categoryFilter);
+    }
+
+    if (sortOrder === "lowToHigh") {
+      filtered = filtered.sort((a, b) => a.price - b.price);
+    } else if (sortOrder === "highToLow") {
+      filtered = filtered.sort((a, b) => b.price - a.price);
+    }
+
+    return filtered;
+  }, [products, searchTerm, sortOrder, categoryFilter]);
+
   return (
     <div className="flex flex-col items-center px-4 md:px-8 pt-8 w-full">
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full">
@@ -27,11 +53,45 @@ function HomeProducts() {
           <IoSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>
 
-        <div className="text-center md:text-right">
-          <p className="text-xl md:text-2xl font-bold text-secondary leading-snug">
-            The best way to buy the <br className="hidden md:block" /> products
-            you love.
-          </p>
+        <div className="relative">
+          <button
+            onClick={() => setFilterOpen((prev) => !prev)}
+            className="w-24 h-10 bg-primary text-white font-medium rounded-md flex justify-center items-center gap-2"
+          >
+            <IoFilter /> Filter
+          </button>
+
+          {filterOpen && (
+            <div className="absolute right-0 mt-2 bg-white shadow-md rounded-lg p-4 w-64 z-20 border">
+              <h3 className="font-semibold mb-2 text-gray-700">
+                Sort By Price
+              </h3>
+              <select
+                className="w-full border p-2 rounded mb-3"
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+              >
+                <option value="">None</option>
+                <option value="lowToHigh">Low to High</option>
+                <option value="highToLow">High to Low</option>
+              </select>
+
+              <h3 className="font-semibold mb-2 text-gray-700">
+                Filter by Category
+              </h3>
+              <select
+                className="w-full border p-2 rounded"
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+              >
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
       </div>
 
@@ -46,9 +106,11 @@ function HomeProducts() {
           </p>
         )}
       </div>
+
       <Footer />
     </div>
   );
 }
 
 export default HomeProducts;
+

@@ -75,7 +75,7 @@ function Cart() {
                 <tbody>
                   {cartItems.map((cartItem, index) => {
                     const product = products.find(
-                      (p) => p._id === cartItem._id
+                      (p) => p.id === cartItem.id
                     );
                     if (!product) return null;
 
@@ -101,7 +101,7 @@ function Cart() {
                             <p className="text-gray-800">{product.name}</p>
                             <button
                               className="text-xs text-primary mt-1"
-                              onClick={() => removeFromCart(product._id)}
+                              onClick={() => removeFromCart(product.id)}
                             >
                               Remove
                             </button>
@@ -116,7 +116,7 @@ function Cart() {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() =>
-                                updateCartQuantity(product._id, quantity - 1)
+                                updateCartQuantity(product.id, quantity - 1)
                               }
                             >
                               <FaMinus className="text-xl text-gray-600 hover:text-primary bg-zinc-200 rounded-full w-5 h-5 p-1" />
@@ -127,7 +127,7 @@ function Cart() {
                               value={quantity}
                               onChange={(e) =>
                                 updateCartQuantity(
-                                  product._id,
+                                  product.id,
                                   Number(e.target.value)
                                 )
                               }
@@ -135,7 +135,7 @@ function Cart() {
                               min="1"
                             />
 
-                            <button onClick={() => addToCart(product._id)}>
+                            <button onClick={() => addToCart(product.id)}>
                               <FaPlus className="text-xl text-gray-600 hover:text-primary bg-zinc-200 rounded-full w-5 h-5 p-1" />
                             </button>
                           </div>

@@ -7,6 +7,7 @@ import HomeProducts from "../HomeProducts";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContextData } from "../../context/AppContext";
 import { toast } from "react-hot-toast";
+
 function ProductDetails() {
   const { id } = useParams();
   const { products, addToCart, user } = useContext(AppContextData);
@@ -19,17 +20,17 @@ function ProductDetails() {
       swal("You must login first", "Add items before Cart!", "warning");
     } else {
       navigate("/GoCart/cart");
-      addToCart(productData._id);
-      toast.success("Add cart successfully!");
+      addToCart(productData.id);
+      toast.success("Added to cart successfully!");
     }
   };
 
-  console.log(user);
-
   useEffect(() => {
-    const product = products.find((p) => p._id === id);
+    const product = products.find((p) => p.id === id);
     setProductData(product);
+    setFirstImage(product?.image?.[0] || null); // ✅ set first image by default
   }, [id, products]);
+
   if (!productData) {
     return (
       <>
@@ -41,27 +42,30 @@ function ProductDetails() {
     );
   }
 
+  // ✅ Helper: get correct image URL
+  const getImageSrc = (img) => {
+    if (!img) return "/images/placeholder.jpg";
+    if (assets[img]) return assets[img];
+    if (img.startsWith("http")) return img;
+    return `/images/${img}`;
+  };
+
   return (
     <>
       <div className="px-6 md:px-16 lg:px-32 pt-10 space-y-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+          {/* LEFT SIDE - IMAGES */}
           <div className="px-5 lg:px-16 xl:px-20">
+            {/* Main image */}
             <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4">
               <img
-                src={
-                  firstImage
-                    ? firstImage.startsWith("http")
-                      ? firstImage
-                      : assets[firstImage.replace(".png", "")]
-                    : productData.image?.[0].startsWith("http")
-                    ? productData.image[0]
-                    : assets[productData.image[0].replace(".png", "")]
-                }
+                src={getImageSrc(firstImage)}
                 alt={productData.name}
                 className="w-full h-auto object-cover mix-blend-multiply transition delay-150 duration-150 hover:scale-105"
               />
             </div>
 
+            {/* Thumbnail list */}
             <div className="grid grid-cols-4 gap-4">
               {productData.image?.slice(0, 4).map((img, index) => (
                 <div
@@ -70,15 +74,16 @@ function ProductDetails() {
                   className="cursor-pointer rounded-lg overflow-hidden bg-gray-500/10 flex justify-center items-center"
                 >
                   <img
-                    src={!img ? img : assets[img]}
+                    src={getImageSrc(img)}
                     alt="thumbnail"
-                    className="w-full h-auto object-cover mix-blend-multiply"
+                    className="w-full h-20 object-cover mix-blend-multiply hover:opacity-80 transition"
                   />
                 </div>
               ))}
             </div>
           </div>
 
+          {/* RIGHT SIDE - DETAILS */}
           <div className="flex flex-col">
             <h1 className="text-3xl font-medium text-gray-800/90 mb-4">
               {productData.name}
@@ -106,8 +111,8 @@ function ProductDetails() {
             <p className="text-gray-600 mt-3">{productData.description}</p>
 
             <p className="text-3xl font-medium mt-6">
-              ₹{productData.offerPrice}
-              {productData.price && (
+              ₹{productData.offerPrice || productData.price}
+              {productData.offerPrice && productData.price && (
                 <span className="text-base font-normal text-gray-800/60 line-through ml-2">
                   ₹{productData.price}
                 </span>
@@ -133,6 +138,7 @@ function ProductDetails() {
           </div>
         </div>
 
+        {/* Related Products */}
         <HomeProducts />
       </div>
     </>

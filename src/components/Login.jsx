@@ -3,9 +3,12 @@ import { AppContextData } from "../context/AppContext";
 import swal from "sweetalert";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const { formData, setFormData, setUser } = useContext(AppContextData);
+
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
   const [isSignUp, setIsSignUp] = useState(true);
@@ -17,7 +20,7 @@ function Login() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Common Validation Function
+  //  Validation function
   const validate = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
@@ -33,7 +36,7 @@ function Login() {
     if (!passwordRegex.test(formData.password)) {
       swal(
         "⚠️ Weak Password",
-        "Min 6 chars, include letters & numbers.",
+        "Password must be at least 6 characters and contain letters & numbers.",
         "warning"
       );
       return false;
@@ -41,7 +44,7 @@ function Login() {
     return true;
   };
 
-  // ✅ Signup Logic
+  //  Signup Logic
   const handleSignup = async () => {
     if (!formData.userName) {
       return swal("⚠️ Missing Username", "Enter your name.", "warning");
@@ -57,10 +60,12 @@ function Login() {
         return swal("❌ Email Exists", "Try another email.", "error");
       }
 
-      const { data } = await axios.post(
-        "http://localhost:3000/users",
-        formData
-      );
+      const { data } = await axios.post("http://localhost:3000/users", {
+        ...formData,
+        role: "user",
+        isBlocked: false,
+      });
+
       setUser(data);
       localStorage.setItem("user", JSON.stringify(data));
       setFormData({ userName: "", email: "", password: "" });
@@ -68,11 +73,11 @@ function Login() {
       swal("✅ Account Created", "Signup Successful!", "success");
       setOpen(false);
     } catch (err) {
-      swal("❌ Error", "Signup failed.", "error");
+      swal("❌ Error", "Signup failed. Try again later.", "error");
     }
   };
 
-  // ✅ Login Logic
+  //  Login Logic
   const handleLogin = async () => {
     if (!validate()) return;
 
@@ -85,14 +90,27 @@ function Login() {
         return swal("❌ Login Failed", "Email or password incorrect.", "error");
       }
 
-      setUser(data[0]);
-      localStorage.setItem("user", JSON.stringify(data[0]));
+      const loggedUser = data[0];
+
+      
+      if (loggedUser.isBlocked) {
+        return swal("🚫 Account Blocked", "Please contact support.", "error");
+      }
+
+      setUser(loggedUser);
+      localStorage.setItem("user", JSON.stringify(loggedUser));
       setFormData({ userName: "", email: "", password: "" });
 
-      swal("✅ Welcome!", `Logged in as ${data[0].userName}`, "success");
+      swal("✅ Welcome!", `Logged in as ${loggedUser.userName}`, "success");
       setOpen(false);
-    } catch {
-      swal("⚠️ Server Error", "Try again later.", "warning");
+
+      if (loggedUser.role === "admin") {
+        navigate("/GoCart/admin", { replace: true });
+      } else {
+        navigate("/GoCart", { replace: true });
+      }
+    } catch (err) {
+      swal("⚠️ Server Error", "Please try again later.", "warning");
     }
   };
 

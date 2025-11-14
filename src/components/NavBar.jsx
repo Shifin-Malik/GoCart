@@ -6,11 +6,12 @@ import { IoClose } from "react-icons/io5";
 import Login from "./Login";
 import { AppContextData } from "../context/AppContext";
 import { assets } from "../assets/assets";
-
+import { FaHeart } from "react-icons/fa";
 function NavBar() {
   const { user, setUser, getCartCount } = useContext(AppContextData);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  
   const navigate = useNavigate();
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
@@ -47,6 +48,7 @@ function NavBar() {
             <NavLink
               key={link.id}
               to={link.path}
+              start={link.name === "Home" && link.path === "/GoCart"}
               end={link.name === "Home"}
               className={({ isActive }) =>
                 `transition ${
@@ -81,7 +83,23 @@ function NavBar() {
                   <div className="p-3 border-b border-gray-200">
                     <p className="font-bold">{user.userName}</p>
                     <p className="text-sm text-gray-500">{user.email}</p>
+                    {user?.role === "user" ? (
+                      <div className="flex items-center gap-2 mt-2 cursor-pointer hover:text-red-500">
+                        <FaHeart className="text-red-500" />
+                        <span className="text-sm font-bold">Wishlist</span>
+                      </div>
+                    ) : (
+                      <div className="mt-2">
+                        <button
+                          onClick={() => navigate("GoCart/admin")}
+                          className="bg-blue-600 w-20 h-8 rounded-lg font-bold text-white cursor-pointer"
+                        >
+                          Admin
+                        </button>
+                      </div>
+                    )}
                   </div>
+
                   <button
                     onClick={handleLogout}
                     className="w-full text-left px-3 py-2 hover:bg-gray-100 text-primary font-semibold"
@@ -106,7 +124,6 @@ function NavBar() {
               </span>
             )}
           </div>
-
           <button
             className="md:hidden text-2xl lg:text-3xl"
             onClick={() => setMenuOpen(true)}

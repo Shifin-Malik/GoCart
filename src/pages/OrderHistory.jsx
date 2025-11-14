@@ -3,7 +3,8 @@ import axios from "axios";
 import { AppContextData } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
-
+import Lottie from "lottie-react";
+import EmptyCart from "/public/Lottie/EmptyCart.json";
 function OrderHistory() {
   const { user, products } = useContext(AppContextData);
   const [orders, setOrders] = useState([]);
@@ -18,15 +19,18 @@ function OrderHistory() {
 
   if (orders.length === 0) {
     return (
-      <div className="p-6 w-full min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-2xl font-semibold text-secondary mb-3">
-          No Orders Yet
-        </h1>
+      <div className="flex flex-col items-center gap-8 md:gap-4">
+        <Lottie className="w-80 h-80" animationData={EmptyCart} />
+        <h1 className="text-3xl font-semibold text-secondary">No Orders Yet</h1>
+        <p className="font-semibold text-secondary text-center">
+          Looks like you haven't added anything to your cart yet. Start
+          exploring products and add your favorites!
+        </p>
         <Link
           to="/GoCart/product"
-          className="px-5 py-2 bg-primary text-white rounded-lg"
+          className=" bg-primary text-white rounded-lg w-40 h-12 text-center flex justify-center items-center font-bold"
         >
-          Shop Now
+          Start Shopping
         </Link>
       </div>
     );
@@ -53,7 +57,7 @@ function OrderHistory() {
 
           <tbody>
             {orders.map((order, index) => {
-              const product = products.find((p) => p._id === order._id);
+              const product = products.find((p) => p.id === order.id);
               if (!product) return null;
               const productImage = product.image[0].startsWith("http")
                 ? product.image[0]
