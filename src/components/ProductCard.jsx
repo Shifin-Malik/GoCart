@@ -15,7 +15,7 @@ const ProductCard = React.memo(({ product }) => {
       }}
       className="flex flex-col items-start gap-0.5 max-w-[200px] w-full cursor-pointer"
     >
-      <div className="group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center overflow-hidden">
+      <div className="group relative rounded-lg w-full h-52 flex items-center justify-center overflow-hidden p-2">
         <img
           className="group-hover:scale-105 transition-transform object-cover w-full h-full"
           src={

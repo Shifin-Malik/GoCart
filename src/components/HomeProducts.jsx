@@ -24,13 +24,13 @@ function HomeProducts() {
 
     if (categoryFilter !== "All") {
       filtered = filtered.filter((p) => p.category === categoryFilter);
-    }
+    };
 
     if (sortOrder === "lowToHigh") {
       filtered = filtered.sort((a, b) => a.price - b.price);
     } else if (sortOrder === "highToLow") {
       filtered = filtered.sort((a, b) => b.price - a.price);
-    }
+    };
 
     return filtered;
   }, [products, searchTerm, sortOrder, categoryFilter]);
