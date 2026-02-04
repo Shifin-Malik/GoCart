@@ -9,7 +9,7 @@ const ProductCard = React.memo(({ product }) => {
   return (
     <div
       onClick={() => {
-        navigate(`/GoCart/product/${product._id}`);
+        navigate(`/product/${product._id}`);
         window.scrollTo(0, 0);
       }}
       className="flex flex-col items-start gap-1 max-w-[200px] w-full cursor-pointer"

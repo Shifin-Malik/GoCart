@@ -4,7 +4,6 @@ import { IoIosFlash } from "react-icons/io";
 import { IoCartSharp } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContextData } from "../../context/AppContext";
-import toast from "react-hot-toast";
 import swal from "sweetalert";
 import { FaHeart } from "react-icons/fa";
 
@@ -31,7 +30,7 @@ function ProductDetails() {
     }
 
     addToCart(productData._id);
-    navigate("/GoCart/cart");
+    navigate("/cart");
   };
 
   if (!productData) {

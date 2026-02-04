@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function NotFound() {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/GoCart");
+    navigate("/");
   };
   return (
     <div className="w-full h-full mt-10 flex flex-col justify-center items-center">

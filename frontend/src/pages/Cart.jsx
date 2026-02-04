@@ -99,7 +99,7 @@ function Cart() {
           </table>
 
           <button
-            onClick={() => navigate("/GoCart/product")}
+            onClick={() => navigate("/product")}
             className="mt-6 text-primary"
           >
             ← Continue Shopping

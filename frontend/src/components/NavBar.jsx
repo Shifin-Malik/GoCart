@@ -25,24 +25,24 @@ function NavBar() {
   };
 
   const addToCart = () => {
-    navigate("/GoCart/cart");
+    navigate("/cart");
   };
 
   const addToWishList = () => {
-    navigate("/GoCart/wishlist");
+    navigate("/wishlist");
   };
 
   const links = [
-    { id: 1, name: "Home", path: "/GoCart" },
-    { id: 2, name: "Products", path: "/GoCart/product" },
-    { id: 3, name: "Support", path: "/GoCart/support" },
-    { id: 4, name: "MyOrders", path: "/GoCart/orderPlace" },
+    { id: 1, name: "Home", path: "" },
+    { id: 2, name: "Products", path: "/product" },
+    { id: 3, name: "Support", path: "/support" },
+    { id: 4, name: "MyOrders", path: "/orderPlace" },
   ];
 
   return (
     <>
       <nav className="flex items-center justify-between px-6 md:px-16 lg:px-20 py-3 border-b border-gray-200 text-secondary relative">
-        <Link to="/GoCart">
+        <Link to="/">
           <h1 className="text-secondary font-bold text-xl lg:text-3xl fugaz-one-regular">
             <span className="fugaz-one-regular text-primary">Go</span>Cart
           </h1>
@@ -53,7 +53,7 @@ function NavBar() {
             <NavLink
               key={link.id}
               to={link.path}
-              start={link.name === "Home" && link.path === "/GoCart"}
+              start={link.name === "Home" && link.path === "/"}
               end={link.name === "Home"}
               className={({ isActive }) =>
                 `transition ${

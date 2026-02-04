@@ -25,12 +25,12 @@ function App() {
   const isAdminRoute = location.pathname.startsWith("/GoCart/admin");
 
   const validRoutes = [
-    "/GoCart",
-    "/GoCart/support",
-    "/GoCart/product",
-    "/GoCart/orderPlace",
-    "/GoCart/product/:id",
-    "/GoCart/cart",
+    "/",
+    "/support",
+    "/product",
+    "/orderPlace",
+    "/product/:id",
+    "/cart",
   ];
 
   const isValidRoute = validRoutes.some((path) =>
@@ -44,13 +44,13 @@ function App() {
       {!hideNavbar && <NavBar />}
       <Suspense fallback={<div className="text-center mt-10">Loading...</div>}>
         <Routes>
-          <Route path="/GoCart" element={<Home />} />
-          <Route path="/GoCart/support" element={<Support />} />
-          <Route path="/GoCart/product" element={<ProductPage />} />
-          <Route path="/GoCart/orderPlace" element={<LazyOrderHistory />} />
-          <Route path="/GoCart/product/:id" element={<ProductDetails />} />
-          <Route path="/GoCart/cart" element={<Cart />} />
-          <Route path="/GoCart/wishlist" element={<Wishlist />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/orderPlace" element={<LazyOrderHistory />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
 
         
 

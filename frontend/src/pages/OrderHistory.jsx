@@ -37,7 +37,7 @@ function OrderHistory() {
           Looks like you haven't placed any orders yet.
         </p>
         <Link
-          to="/GoCart/product"
+          to="/product"
           className="bg-primary text-white rounded-lg w-40 h-12 flex justify-center items-center font-bold"
         >
           Start Shopping

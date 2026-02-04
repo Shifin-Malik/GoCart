@@ -32,7 +32,7 @@ export const AppContext = ({ children }) => {
       setCartItems([]);
       setWishlistItems([]);
       setTimeout(() => {
-        navigate("/GoCart");
+        navigate("/");
       }, 0);
     });
 
@@ -175,7 +175,7 @@ export const AppContext = ({ children }) => {
 
       swal("✅ Order Placed", "Thanks for shopping!", "success");
 
-      navigate("/GoCart/orderplace");
+      navigate("/orderplace");
     } catch (err) {
       console.error(err);
       swal("Error", err.response?.data?.message || "Order failed", "error");
