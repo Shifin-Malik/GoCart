@@ -175,7 +175,7 @@ export const AppContext = ({ children }) => {
 
       swal("✅ Order Placed", "Thanks for shopping!", "success");
 
-      navigate("/orderplace");
+      navigate("/orderPlace");
     } catch (err) {
       console.error(err);
       swal("Error", err.response?.data?.message || "Order failed", "error");

@@ -11,10 +11,9 @@ function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { products, addToCart, user, currency,addWishlist,createOrder } = useContext(AppContextData);
+  const { products, addToCart, user, currency, addWishlist, createOrder } =
+    useContext(AppContextData);
   const [productData, setProductData] = useState(null);
-
-
 
   useEffect(() => {
     if (products?.length > 0) {
@@ -45,7 +44,10 @@ function ProductDetails() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div className="px-5 lg:px-16 xl:px-20">
             <div className="relative rounded-lg overflow-hidden bg-gray-500/10">
-              <button onClick={()=>addWishlist(productData._id)} className="absolute top-3 right-3 z-10">
+              <button
+                onClick={() => addWishlist(productData._id)}
+                className="absolute top-3 right-3 z-10"
+              >
                 <FaHeart
                   className="
           w-8 h-8 lg:w-10 lg:h-10
@@ -55,6 +57,7 @@ function ProductDetails() {
           text-red-500
           hover:bg-zinc-300
           transition
+          
         "
                 />
               </button>

@@ -63,7 +63,7 @@ function Wishlist() {
 
               <button
                 onClick={() =>
-                  addToCart(item.productId._id, toast.success("addData"))
+                  addToCart(item.productId._id, toast.success("add cart"))
                 }
                 className="mt-3 w-full flex items-center justify-center gap-2 text-sm bg-primary text-white py-2 rounded-lg hover:bg-blue-800"
               >
