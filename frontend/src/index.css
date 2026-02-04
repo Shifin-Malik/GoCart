@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Vend+Sans:ital,wght@0,300..700;1,300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap");
+@plugin "tailwind-scrollbar-hide";
+
+.fugaz-one-regular {
+  font-family: "Fugaz One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.font-vend-sans {
+  font-family: "Vend Sans", sans-serif;
+}
+
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Primary Colors */
+  --color-primary: #0046ff;
+  --color-secondary: #11224e;
+  --color-banner: #e6e9f2;
+
+  /* Text Colors */
+  --text-color-primary: #0046ff;
+  --text-color-secondary: #11224e;
+  --text-color-third: #6B7280
+
+  /* Border */
+  --border-color-primary: #d1d5db;
+  --border-color-secondary: #0046ff;
+}
+
+.dark {
+  --background: #121212;
+  --foreground: #222222;
+  --text-color: #eaefef;
+  --border-color: #3c3d37;
+}
