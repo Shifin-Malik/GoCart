@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import User from "../models/UserModel.js";
-
 export const protect = asyncHandler(async (req, res, next) => {
   let token;
+
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -13,25 +13,37 @@ export const protect = asyncHandler(async (req, res, next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = await User.findById(decoded.id).select("-password");
+      const user = await User.findById(decoded.id).select("-password");
 
-      if (!req.user) {
-        res.status(401);
-        throw new Error("User not found");
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: "User not found",
+        });
       }
 
+      req.user = user;
       next();
+
     } catch (error) {
-      res.status(401);
 
       if (error.name === "TokenExpiredError") {
-        throw new Error("Token expired. Please login again.");
+        return res.status(401).json({
+          success: false,
+          message: "Token expired. Please login again.",
+        });
       }
 
-      throw new Error("Not authorized. Invalid token.");
+      return res.status(401).json({
+        success: false,
+        message: "Invalid token",
+      });
     }
+
   } else {
-    res.status(401);
-    throw new Error("Not authorized. No token provided.");
+    return res.status(401).json({
+      success: false,
+      message: "No token provided",
+    });
   }
 });

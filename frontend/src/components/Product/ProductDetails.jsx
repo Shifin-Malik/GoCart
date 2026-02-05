@@ -11,7 +11,7 @@ function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { products, addToCart, user, currency, addWishlist, createOrder } =
+  const { products, addToCart, user, currency, toggleWishlist, createOrder } =
     useContext(AppContextData);
   const [productData, setProductData] = useState(null);
 
@@ -45,7 +45,7 @@ function ProductDetails() {
           <div className="px-5 lg:px-16 xl:px-20">
             <div className="relative rounded-lg overflow-hidden bg-gray-500/10">
               <button
-                onClick={() => addWishlist(productData._id)}
+                onClick={() => toggleWishlist(productData._id)}
                 className="absolute top-3 right-3 z-10"
               >
                 <FaHeart

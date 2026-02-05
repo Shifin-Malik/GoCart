@@ -48,7 +48,7 @@ function Login() {
   const handleSignup = async () => {
     if (!formData.userName) {
       return swal("⚠️ Missing Username", "Enter your name.", "warning");
-    };
+    }
 
     if (!validate()) return;
 
@@ -59,7 +59,8 @@ function Login() {
         password: formData.password,
       });
 
-      setUser(data.data);
+      setUser({ ...data.data, token: data.data.token });
+      localStorage.setItem("user", JSON.stringify(data.data));
       localStorage.setItem("token", data.data.token);
 
       swal("✅ Account Created", "Signup Successful!", "success");
@@ -78,14 +79,15 @@ function Login() {
         password: formData.password,
       });
 
-      setUser(data.data);
+      setUser({ ...data.data, token: data.data.token });
+      localStorage.setItem("user", JSON.stringify(data.data));
       localStorage.setItem("token", data.data.token);
 
       swal("✅ Welcome!", `Logged in as ${data.data.username}`, "success");
       setFormData({ userName: "", email: "", password: "" });
       setOpen(false);
 
-      navigate("/GoCart", { replace: true });
+      navigate("/", { replace: true });
     } catch (err) {
       swal(
         "❌ Login Failed",

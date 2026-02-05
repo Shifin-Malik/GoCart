@@ -18,7 +18,7 @@ function Cart() {
         <Lottie className="w-80 h-80" animationData={EmptyCart} />
         <h1 className="text-3xl font-semibold">Your Cart Is Empty</h1>
         <Link
-          to="/GoCart/product"
+          to="/product"
           className="bg-primary text-white px-6 py-3 rounded-lg font-bold"
         >
           Start Shopping
@@ -76,7 +76,9 @@ function Cart() {
                     <td>
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => updateCartQuantity(item.productId._id, "dec")}
+                          onClick={() =>
+                            updateCartQuantity(item.productId._id, "dec")
+                          }
                         >
                           <FaMinus />
                         </button>
@@ -84,7 +86,9 @@ function Cart() {
                         <span>{quantity}</span>
 
                         <button
-                          onClick={() => updateCartQuantity(item.productId._id, "inc")}
+                          onClick={() =>
+                            updateCartQuantity(item.productId._id, "inc")
+                          }
                         >
                           <FaPlus />
                         </button>

@@ -9,7 +9,7 @@ import { assets } from "../assets/assets";
 import { FaHeart } from "react-icons/fa";
 function NavBar() {
 
-  const { user, setUser, getCartCount, getWislistCount } = useContext(AppContextData);
+  const { user, setUser, getCartCount, getWishlistCount } = useContext(AppContextData);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -137,9 +137,9 @@ function NavBar() {
               size={30}
               className="w-6 h-6 bg-zinc-200 p-1 lg:p-2 lg:w-10 lg:h-10 rounded-full hover:bg-zinc-300 transition"
             />
-            {getWislistCount() > 0 && (
+            {getWishlistCount() > 0 && (
               <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
-                {getWislistCount()}
+                {getWishlistCount()}
               </span>
             )}
           </div>

@@ -15,17 +15,33 @@ function OrderHistory() {
 
 
     const fetchOrders = async () => {
-      try {
-        const { data } = await axios.get("/orders");
-        setOrders(data.orders || []);
-      } catch (err) {
-        console.error("Fetch orders error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  try {
+    if (!user) return;
 
-    fetchOrders();
+    const token = user.token || localStorage.getItem("token");
+
+    const { data } = await axios.get("/orders", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setOrders(data.orders || []);
+
+  } catch (err) {
+    console.error("Fetch orders error:", err);
+
+    if (err.response?.status === 401) {
+      console.log("Session expired. Please login again.");
+    }
+
+  } finally {
+    setLoading(false);
+  }
+};
+
+fetchOrders();
+
   }, [user]);
 
   if (!loading && orders.length === 0) {

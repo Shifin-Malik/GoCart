@@ -61,7 +61,6 @@ export const AppContext = ({ children }) => {
     if (!user) return;
     try {
       const { data } = await axios.get("/cart");
-      console.log(data);
       setCartItems(data.cart || []);
     } catch (err) {
       console.error("Fetch cart error:", err);
@@ -122,65 +121,85 @@ export const AppContext = ({ children }) => {
     if (!user) return;
 
     try {
-      const { data } = await axios.get("/wishlist");
+      const token = user.token || localStorage.getItem("token");
+
+      const { data } = await axios.get("/wishlist", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       setWishlistItems(data.products || []);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to fetch wishlist");
-    }
-  };
+      console.log(error);
 
-  const addWishlist = async (productId) => {
-    if (!user) return toast.error("Please login first");
-
-    try {
-      await axios.post(`/wishlist/${productId}`);
-      toast.success("Added to wishlist");
-      getWishlist();
-    } catch (error) {
-      if (error.response?.data?.message === "Product already in wishlist") {
-        toast("Already in wishlist");
+      if (error.response?.status === 401) {
+        toast.error("Please login again");
       } else {
-        toast.error(error.response?.data?.message || "Add to wishlist failed");
+        toast.error(
+          error.response?.data?.message || "Failed to fetch wishlist",
+        );
       }
     }
   };
 
-  const removeFromWishList = async (productId) => {
+  const toggleWishlist = async (productId) => {
+    if (!user) return toast.error("Please login first");
+
     try {
-      await axios.delete(`/wishlist/${productId}`);
-      getWishlist();
+      const { data } = await axios.post(`/wishlist/toggle/${productId}`);
+      toast.success(data.message);
+
+      await getWishlist();
     } catch (error) {
-      console.error("Remove wishlist error:", error);
+      toast.error(error.response?.data?.message || "Wishlist action failed");
     }
   };
 
-  const getWislistCount = () => wishlistItems.length;
+  const getWishlistCount = () => wishlistItems.length;
 
   const createOrder = async () => {
-    if (!user) return swal("Login Required", "Please login first", "warning");
-    if (!cartItems.length)
-      return swal("Cart Empty", "Add some items", "warning");
+  if (!user) return swal("Login Required", "Please login first", "warning");
+  if (!cartItems.length)
+    return swal("Cart Empty", "Add some items", "warning");
 
-    try {
-      const products = cartItems.map((item) => ({
-        productId: item.productId._id,
-        quantity: item.quantity,
-      }));
+  try {
+    const token = user.token || localStorage.getItem("token");
 
-      const orderId = `ORD-${Date.now()}`;
+    const products = cartItems.map((item) => ({
+      productId: item.productId._id,
+      quantity: item.quantity,
+    }));
 
-      await axios.post("/orders", { products, orderId });
+    const orderId = `ORD-${Date.now()}`;
 
-      await clearCart();
+    await axios.post(
+      "/orders",
+      { products, orderId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-      swal("✅ Order Placed", "Thanks for shopping!", "success");
+    await clearCart();
 
-      navigate("/orderPlace");
-    } catch (err) {
-      console.error(err);
+    swal("✅ Order Placed", "Thanks for shopping!", "success");
+
+    navigate("/orderPlace");
+
+  } catch (err) {
+    console.error(err);
+
+    if (err.response?.status === 401) {
+      swal("Session Expired", "Please login again", "warning");
+    } else {
       swal("Error", err.response?.data?.message || "Order failed", "error");
     }
-  };
+  }
+};
+
 
   useEffect(() => {
     fetchProducts();
@@ -226,11 +245,10 @@ export const AppContext = ({ children }) => {
     loading,
     setLoading,
     setProducts,
-    addWishlist,
     getWishlist,
     wishlistItems,
-    removeFromWishList,
-    getWislistCount,
+    toggleWishlist,
+    getWishlistCount,
     fetchProductsCategory,
   };
 
