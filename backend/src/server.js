@@ -25,6 +25,7 @@ const allowedOrigins = [
   "http://localhost:3000",
 ];
 
+// CORS
 app.use(
   cors({
     origin: allowedOrigins,
@@ -32,8 +33,6 @@ app.use(
   })
 );
 
-// Handle preflight
-app.options("*", cors());
 
 
 app.use(express.json());
