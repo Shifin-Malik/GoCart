@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect, createContext, useRef } from "react";
 import { featuredItems, supportItems } from "../assets/assets";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -26,6 +26,13 @@ export const AppContext = ({ children }) => {
     password: "",
   });
 
+  // admin state
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [orders, setOrders] = useState(0);
+  const [cat, setCat] = useState([]);
+
   useEffect(() => {
     const ejectAxios = setupAxios(backendUrl, () => {
       setUser(null);
@@ -48,14 +55,14 @@ export const AppContext = ({ children }) => {
     }
   };
 
-  const fetchProductsCategory = async (categoryId) => {
-    try {
-      const { data } = await axios.get(`/products/category/${categoryId}`);
-      setProducts(data.products || []);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const fetchProductsCategory = async (categoryId) => {
+  //   try {
+  //     const { data } = await axios.get(`/products/category/${categoryId}`);
+  //     setProducts(data.products || []);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const fetchCart = async () => {
     if (!user) return;
@@ -159,47 +166,240 @@ export const AppContext = ({ children }) => {
   const getWishlistCount = () => wishlistItems.length;
 
   const createOrder = async () => {
-  if (!user) return swal("Login Required", "Please login first", "warning");
-  if (!cartItems.length)
-    return swal("Cart Empty", "Add some items", "warning");
+    if (!user) return swal("Login Required", "Please login first", "warning");
+    if (!cartItems.length)
+      return swal("Cart Empty", "Add some items", "warning");
 
-  try {
-    const token = user.token || localStorage.getItem("token");
+    try {
+      const token = user.token || localStorage.getItem("token");
 
-    const products = cartItems.map((item) => ({
-      productId: item.productId._id,
-      quantity: item.quantity,
-    }));
+      const products = cartItems.map((item) => ({
+        productId: item.productId._id,
+        quantity: item.quantity,
+      }));
 
-    const orderId = `ORD-${Date.now()}`;
+      const orderId = `ORD-${Date.now()}`;
 
-    await axios.post(
-      "/orders",
-      { products, orderId },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      await axios.post(
+        "/orders",
+        { products, orderId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
+      );
+
+      await clearCart();
+
+      swal("✅ Order Placed", "Thanks for shopping!", "success");
+
+      navigate("/orderPlace");
+    } catch (err) {
+      console.error(err);
+
+      if (err.response?.status === 401) {
+        swal("Session Expired", "Please login again", "warning");
+      } else {
+        swal("Error", err.response?.data?.message || "Order failed", "error");
       }
-    );
-
-    await clearCart();
-
-    swal("✅ Order Placed", "Thanks for shopping!", "success");
-
-    navigate("/orderPlace");
-
-  } catch (err) {
-    console.error(err);
-
-    if (err.response?.status === 401) {
-      swal("Session Expired", "Please login again", "warning");
-    } else {
-      swal("Error", err.response?.data?.message || "Order failed", "error");
     }
-  }
-};
+  };
 
+  // admin dash
+  // fetch totalRevenue
+  const fetchTotalRevenue = async (req, res) => {
+    try {
+      const { data } = await axios.get("/admin/totalRev");
+      if (data.success) {
+        setTotalRevenue(data.totalRevenue);
+      }
+    } catch (error) {
+      console.error("Fetch Revenue Error:", error);
+      toast.error(error.response?.data?.message || "Failed to fetch revenue");
+    }
+  };
+
+  
+  const fetchTotalOrders = async (req, res) => {
+    try {
+      const { data } = await axios.get("/admin/totalPurchase");
+      if (data.success) {
+        setTotalOrders(data.totalPurchased);
+      }
+    } catch (error) {
+      console.error("Fetch orders Error:", error);
+      toast.error(error.response?.data?.message || "Failed to fetch orders");
+    }
+  };
+
+ 
+  const fetchTotalUsersCount = async (req, res) => {
+    try {
+      const { data } = await axios.get("/admin/users");
+      if (data.success) {
+        setTotalUsers(data.users);
+      }
+    } catch (error) {
+      console.error("Fetch orders Error:", error);
+      toast.error(error.response?.data?.message || "Failed to fetch orders");
+    }
+  };
+
+ 
+  const toggleUserBlock = async (id) => {
+    try {
+      const { data } = await axios.put(`/admin/user/toggle/${id}`);
+
+      toast.success(data.message);
+
+      setTotalUsers((prev) =>
+        prev.map((user) =>
+          user._id === id ? { ...user, isBlocked: !user.isBlocked } : user,
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to update status");
+    }
+  };
+
+ 
+  const handleDeleteUser = async (id) => {
+    try {
+      const { data } = await axios.delete(`/admin/user/${id}`);
+
+      toast.success(data.message);
+
+      setTotalUsers((prev) => prev.filter((user) => user._id !== id));
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to delete user");
+    }
+  };
+
+  const getAllOrders = async () => {
+    try {
+      const { data } = await axios.get("/admin/allOrders");
+
+      setOrders(data.orders);
+
+      // toast.success("Orders fetched successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to fetch orders");
+    }
+  };
+
+  
+  const deleteProduct = async (id) => {
+    try {
+      const { data } = await axios.delete(`/admin/product/${id}`);
+      toast.success(data.message || "Product deleted");
+
+      setProducts((prev) => prev.filter((product) => product._id !== id));
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to delete product");
+    }
+  };
+
+  
+  const debounceRef = useRef(null);
+  const controllerRef = useRef(null);
+  const requestIdRef = useRef(0);
+
+  const searchProducts = (query) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(async () => {
+      let requestId;
+
+      try {
+        if (!query || !query.trim()) {
+          fetchProducts();
+          return;
+        }
+
+        if (query.trim().length < 2) return;
+
+        if (controllerRef.current) {
+          controllerRef.current.abort();
+        }
+
+        const controller = new AbortController();
+        controllerRef.current = controller;
+
+        requestId = ++requestIdRef.current;
+
+        setLoading(true);
+
+        const { data } = await axios.get(
+          `/products/search?q=${encodeURIComponent(query.trim())}`,
+          {
+            signal: controller.signal,
+          },
+        );
+
+        if (requestId !== requestIdRef.current) return;
+
+        if (data.success) {
+          setProducts(data.products || []);
+        }
+      } catch (error) {
+        if (!axios.isCancel(error)) {
+          console.error("Search Error:", error);
+          toast.error("Search failed");
+        }
+      } finally {
+        if (requestId === requestIdRef.current) {
+          setLoading(false);
+        }
+      }
+    }, 400);
+  };
+
+  const getAllCategories = async () => {
+    try {
+      const { data } = await axios.get(`/products/categories`);
+
+      if (data.success) {
+        setCat(data.categories);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getProductsByCategory = async (category) => {
+    try {
+      setLoading(true);
+
+      const { data } = await axios.get(`/products/category/${category}`);
+
+      if (data.success) {
+        setProducts(data.products);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user?.role === "admin") {
+      const fetchAdminData = async () => {
+        await fetchTotalRevenue();
+        await fetchTotalOrders();
+        await fetchTotalUsersCount();
+        await getAllOrders();
+      };
+      fetchAdminData();
+    }
+  }, [user]);
 
   useEffect(() => {
     fetchProducts();
@@ -249,7 +449,23 @@ export const AppContext = ({ children }) => {
     wishlistItems,
     toggleWishlist,
     getWishlistCount,
-    fetchProductsCategory,
+    //admin
+    totalRevenue,
+    fetchTotalRevenue,
+    totalOrders,
+    fetchTotalOrders,
+    totalUsers,
+    fetchTotalUsersCount,
+    toggleUserBlock,
+    handleDeleteUser,
+    getAllOrders,
+    orders,
+    deleteProduct,
+    searchProducts,
+    getAllCategories,
+    getProductsByCategory,
+    cat,
+    fetchProducts,
   };
 
   return (

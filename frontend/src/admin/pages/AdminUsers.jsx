@@ -1,9 +1,8 @@
-// src/components/Admin/AdminUsers.jsx
 import React, { useContext } from "react";
 import { AppContextData } from "../../context/AppContext";
 
 function AdminUsers() {
-  const { users, handleDeleteUser, handleBlockUser } =
+  const { totalUsers, handleDeleteUser, toggleUserBlock } =
     useContext(AppContextData);
 
   return (
@@ -23,14 +22,14 @@ function AdminUsers() {
           </thead>
 
           <tbody>
-            {users.map((user, index) => (
+            {totalUsers.map((user, index) => (
               <tr
-                key={user.id || index}
+                key={user._id || index}
                 className="hover:bg-gray-100 transition border-b last:border-none"
               >
                 <td className="px-5 py-3 border-r">{index + 1}</td>
                 <td className="px-5 py-3 border-r capitalize">
-                  {user.userName}
+                  {user.username}
                   {user.isBlocked && (
                     <span className="ml-2 text-xs text-red-600 font-semibold">
                       (Blocked)
@@ -56,13 +55,7 @@ function AdminUsers() {
                   ) : (
                     <div className="flex justify-center items-center gap-2">
                       <button
-                        onClick={() =>
-                          handleBlockUser(
-                            user.id,
-                            user.userName,
-                            user.isBlocked
-                          )
-                        }
+                        onClick={() => toggleUserBlock(user._id || user.id)}
                         className={`w-20 h-8 ${
                           user.isBlocked ? "bg-red-500" : "bg-green-500"
                         } rounded-md text-white cursor-pointer`}
@@ -70,7 +63,7 @@ function AdminUsers() {
                         {user.isBlocked ? "Unblock" : "Block"}
                       </button>
                       <button
-                        onClick={() => handleDeleteUser(user.id, user.userName)}
+                        onClick={() => handleDeleteUser(user._id || user.id)}
                         className="w-20 h-8 bg-red-500 rounded-md text-white cursor-pointer"
                       >
                         Remove
@@ -81,7 +74,7 @@ function AdminUsers() {
               </tr>
             ))}
 
-            {users.length === 0 && (
+            {totalUsers.length === 0 && (
               <tr>
                 <td colSpan={5} className="text-center py-6 text-gray-500">
                   No users found.

@@ -1,32 +1,12 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { assets } from "../../assets/assets";
+import { AppContextData } from "../../context/AppContext";
 
 function AdminOrders() {
-  const [orders, setOrders] = useState([]);
-  const API_URI = "http://localhost:3000/users";
+  const { orders } = useContext(AppContextData);
 
-  useEffect(() => {
-    const userDataFetch = async () => {
-      try {
-        const { data } = await axios.get(API_URI);
-
-        const allOrders = data.flatMap(
-          (user) =>
-            user.purchase?.map((p) => ({
-              ...p,
-              userName: user.userName,
-              email: user.email,
-            })) || []
-        );
-
-        setOrders(allOrders);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    userDataFetch();
-  }, []);
+  console.log(orders);
 
   return (
     <div className="p-6">
@@ -48,27 +28,37 @@ function AdminOrders() {
           </thead>
 
           <tbody>
-            {orders.map((item, index) => (
-              <tr key={index} className="hover:bg-gray-100">
+            {orders.map((order, index) => (
+              <tr key={order._id} className="hover:bg-gray-100">
                 <td className="border p-3 text-center">{index + 1}</td>
-                <td className="border p-3">{item.userName}</td>
-                <td className="border p-3">{item.email}</td>
-                <td className="border p-3">{item.name}</td>
-                <td className="border p-3 text-green-600 font-semibold">
-                  ₹{item.price}
-                </td>
-                <td className="border p-3 text-center">{item.quantity}</td>
-                <td className="border p-3">{item.date}</td>
+
                 <td className="border p-3">
-                  <img
-                    src={
-                      item.image?.startsWith("http")
-                        ? item.image
-                        : assets[item.image] || "/images/placeholder.jpg"
-                    }
-                    alt={item.name}
-                    className="w-14 h-14 rounded-md object-cover transition-transform hover:scale-110 delay-100 duration-100"
-                  />
+                  {order.userId?.username || "Guest"}
+                </td>
+
+                <td className="border p-3">{order.userId?.email || "-"}</td>
+
+                <td className="border p-3 text-center">{order.totalItems}</td>
+
+                <td className="border p-3 text-green-600 font-semibold">
+                  ₹{order.totalPrice}
+                </td>
+
+                <td className="border p-3 text-center">{order.totalItems}</td>
+
+                <td className="border p-3">
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </td>
+
+                <td className="border p-3 flex gap-2">
+                  {order.products.map((p, i) => (
+                    <img
+                      key={i}
+                      src={p.productId?.image}
+                      alt="product"
+                      className="w-14 h-14 rounded-md object-cover"
+                    />
+                  ))}
                 </td>
               </tr>
             ))}

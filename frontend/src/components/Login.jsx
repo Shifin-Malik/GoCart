@@ -79,15 +79,26 @@ function Login() {
         password: formData.password,
       });
 
-      setUser({ ...data.data, token: data.data.token });
-      localStorage.setItem("user", JSON.stringify(data.data));
-      localStorage.setItem("token", data.data.token);
+      
+      const userData = data.data;
 
-      swal("✅ Welcome!", `Logged in as ${data.data.username}`, "success");
+     
+      setUser({ ...userData, token: userData.token });
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", userData.token);
+
+      swal("✅ Welcome!", `Logged in as ${userData.username}`, "success");
+
       setFormData({ userName: "", email: "", password: "" });
       setOpen(false);
 
-      navigate("/", { replace: true });
+      
+      if (userData.role === "admin") {
+        navigate("/GoCart/admin", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     } catch (err) {
       swal(
         "❌ Login Failed",

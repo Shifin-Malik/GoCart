@@ -1,18 +1,19 @@
 import express from "express";
-import { protect } from "../middlewares/authMiddleware.js";
+
 import {
-  createProduct,
+  getAllCategories,
   getAllProducts,
   getProductById,
   getProductsByCategory,
+  searchProducts,
 } from "../controllers/productController.js";
-import uploadProduct from "../middlewares/uploadProduct.js";
 
 const router = express.Router();
 
 router.get("/", getAllProducts);
-router.get("/category/:categoryname", getProductsByCategory);
+router.get("/search", searchProducts);
+router.get("/categories", getAllCategories);
+router.get("/category/:category", getProductsByCategory);
 router.get("/:id", getProductById);
-router.post("/", protect, uploadProduct.single("image"), createProduct);
 
 export default router;

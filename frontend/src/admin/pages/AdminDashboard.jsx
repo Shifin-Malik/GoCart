@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { FaRupeeSign, FaShoppingCart, FaBox } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
@@ -7,42 +8,20 @@ import { AppContextData } from "../../context/AppContext";
 import { CChart } from "@coreui/react-chartjs";
 
 function AdminDashboard() {
-  const { products } = useContext(AppContextData);
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchUsersDetails = async () => {
-      try {
-        const { data } = await axios.get("http://localhost:3000/users");
-        setUsers(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUsersDetails();
-  }, []);
-
-  const totalAllOrders = users.reduce((total, user) => {
-    const userTotal = (user.purchase || []).reduce(
-      (sum, item) => sum + (item.quantity || 0),
-      0
-    );
-    return total + userTotal;
-  }, 0);
-
-  const totalAllSales = users.reduce((total, user) => {
-    const userTotal = (user.purchase || []).reduce(
-      (sum, item) => sum + (item.price || 0),
-      0
-    );
-    return total + userTotal;
-  }, 0);
+  const { products, setUser, totalOrders, totalRevenue, totalUsers } =
+    useContext(AppContextData);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    navigate("/");
+  };
 
   const cardItems = [
     {
       id: 1,
-      title: "Total Sales",
-      value: totalAllSales,
+      title: "Total Revenue",
+      value: totalRevenue,
       days: "Last 30 Days",
       icon: <FaRupeeSign size={28} />,
       bgColor: "bg-red-500/40",
@@ -50,7 +29,7 @@ function AdminDashboard() {
     {
       id: 2,
       title: "Total Orders",
-      value: totalAllOrders,
+      value: totalOrders,
       days: "Last 30 Days",
       icon: <FaShoppingCart size={28} />,
       bgColor: "bg-green-500/40",
@@ -58,7 +37,7 @@ function AdminDashboard() {
     {
       id: 3,
       title: "Total Customers",
-      value: users.length - 1,
+      value: totalUsers.length,
       days: "Last 30 Days",
       icon: <FaUsers size={28} />,
       bgColor: "bg-blue-500/40",
@@ -75,8 +54,15 @@ function AdminDashboard() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <button
+          onClick={handleLogout}
+          className="bg-primary w-40 rounded-md h-10 font-bold text-white"
+        >
+          Logout
+        </button>
+      </div>
       <div className="flex flex-wrap gap-6">
         {cardItems.map((item) => (
           <div
@@ -116,7 +102,7 @@ function AdminDashboard() {
                   pointBackgroundColor: "#fff",
                   borderWidth: 2,
                   tension: 0.4,
-                  data: [0, 30000, 60000, totalAllSales],
+                  data: [0, 30000, 60000, totalRevenue],
                 },
               ],
             }}
@@ -160,7 +146,7 @@ function AdminDashboard() {
                   pointBackgroundColor: "#fff",
                   borderWidth: 2,
                   tension: 0.4,
-                  data: [1, 3, 6, totalAllOrders],
+                  data: [1, 3, 6, totalOrders],
                 },
               ],
             }}

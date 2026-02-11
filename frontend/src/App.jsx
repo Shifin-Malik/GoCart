@@ -15,6 +15,7 @@ import AdminProducts from "./admin/pages/AdminProducts";
 import ProtectedAdminRoute from "./utils/ProtectedAdminRoute";
 import { AppContextData } from "./context/AppContext";
 import Wishlist from "./pages/Wishlist";
+import ProUserRoute from "./utils/ProUserRoute";
 
 const LazyOrderHistory = lazy(() => import("./pages/OrderHistory"));
 
@@ -34,7 +35,7 @@ function App() {
   ];
 
   const isValidRoute = validRoutes.some((path) =>
-    matchPath({ path, end: true }, location.pathname)
+    matchPath({ path, end: true }, location.pathname),
   );
 
   const hideNavbar = isAdminRoute || !isValidRoute;
@@ -44,37 +45,90 @@ function App() {
       {!hideNavbar && <NavBar />}
       <Suspense fallback={<div className="text-center mt-10">Loading...</div>}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/product" element={<ProductPage />} />
-          <Route path="/orderPlace" element={<LazyOrderHistory />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/wishlist" element={<Wishlist />} />
+          {/* USER ROUTES */}
+          <Route
+            path="/"
+            element={
+              <ProUserRoute>
+                <Home />
+              </ProUserRoute>
+            }
+          />
 
-        
+          <Route
+            path="/support"
+            element={
+              <ProUserRoute>
+                <Support />
+              </ProUserRoute>
+            }
+          />
 
-          {user?.role === "admin" && (
-            <Route
-              path="/GoCart/admin"
-              element={
-                <ProtectedAdminRoute>
-                  <AdminLayout />
-                </ProtectedAdminRoute>
-              }
-            >
-              <Route index element={<AdminDashboard />} />
-              <Route path="products" element={<AdminProducts />} />
-              <Route path="orders" element={<AdminOrders />} />
-              <Route path="users" element={<AdminUsers />} />
-            </Route>
-          )}
+          <Route
+            path="/product"
+            element={
+              <ProUserRoute>
+                <ProductPage />
+              </ProUserRoute>
+            }
+          />
+
+          <Route
+            path="/orderPlace"
+            element={
+              <ProUserRoute>
+                <LazyOrderHistory />
+              </ProUserRoute>
+            }
+          />
+
+          <Route
+            path="/product/:id"
+            element={
+              <ProUserRoute>
+                <ProductDetails />
+              </ProUserRoute>
+            }
+          />
+
+          <Route
+            path="/cart"
+            element={
+              <ProUserRoute>
+                <Cart />
+              </ProUserRoute>
+            }
+          />
+
+          <Route
+            path="/wishlist"
+            element={
+              <ProUserRoute>
+                <Wishlist />
+              </ProUserRoute>
+            }
+          />
+
+         
+          <Route
+            path="/GoCart/admin"
+            element={
+              <ProtectedAdminRoute>
+                <AdminLayout />
+              </ProtectedAdminRoute>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="users" element={<AdminUsers />} />
+          </Route>
 
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </div>
   );
-};
+}
 
 export default App;
