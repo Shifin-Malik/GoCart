@@ -22,10 +22,17 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: [
+      "https://go-cart-three-murex.vercel.app",
+      "http://localhost:5173",
+      FRONTEND_URL
+    ],
     credentials: true,
-  }),
+  })
 );
+
+app.options("*", cors());
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
