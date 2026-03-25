@@ -57,6 +57,7 @@ function ProductDetails() {
           text-red-500
           hover:bg-zinc-300
           transition
+          z-0
           
         "
                 />

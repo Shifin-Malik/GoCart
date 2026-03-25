@@ -19,29 +19,14 @@ connectCloudinary();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const allowedOrigins = [
-  "https://go-cart-three-murex.vercel.app",
-  "http://localhost:5173",
-  "http://localhost:3000",
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: process.env.FRONTEND_URL, // your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Handle preflight
-app.options("*", cors());
 
 
 app.use(express.json());

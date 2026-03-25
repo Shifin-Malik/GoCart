@@ -79,10 +79,8 @@ function Login() {
         password: formData.password,
       });
 
-      
       const userData = data.data;
 
-     
       setUser({ ...userData, token: userData.token });
 
       localStorage.setItem("user", JSON.stringify(userData));
@@ -93,7 +91,6 @@ function Login() {
       setFormData({ userName: "", email: "", password: "" });
       setOpen(false);
 
-      
       if (userData.role === "admin") {
         navigate("/GoCart/admin", { replace: true });
       } else {
@@ -123,7 +120,7 @@ function Login() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-10">
+        <div className="z-50 fixed inset-0 bg-black/40 flex justify-center items-center">
           <div className="bg-black/90 rounded-2xl max-w-md w-full p-6 relative">
             <button
               onClick={handleOpen}

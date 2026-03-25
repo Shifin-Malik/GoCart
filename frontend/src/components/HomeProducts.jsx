@@ -24,9 +24,7 @@ function HomeProducts() {
 
   return (
     <div className="flex flex-col items-center px-4 md:px-8 pt-8 w-full">
-    
       <div className="flex flex-col gap-6 w-full">
-     
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full">
           <p className="text-2xl text-secondary font-bold">GoCart Products</p>
 
@@ -64,27 +62,22 @@ function HomeProducts() {
           </div>
         </div>
 
-    
         <div className="flex gap-3 flex-wrap justify-center md:justify-start">
-        
           <button
             onClick={() => {
-              fetchProducts(); 
+              fetchProducts();
               setActiveCategory("all");
               setSearchTerm("");
-              searchProducts(""); 
+              searchProducts("");
             }}
             className={`px-4 py-1 rounded-full border
               ${
-                activeCategory === "all"
-                  ? "bg-secondary text-white"
-                  : "bg-white"
+                activeCategory === "all" ? "bg-primary text-white" : "bg-white"
               }`}
           >
             All
           </button>
 
-          
           {cat?.map((item) => (
             <button
               key={item}
@@ -93,11 +86,9 @@ function HomeProducts() {
                 setActiveCategory(item);
                 setSearchTerm("");
               }}
-              className={`px-4 py-1 rounded-full border capitalize
+              className={`px-6 py-2  rounded-2xl border capitalize
                 ${
-                  activeCategory === item
-                    ? "bg-secondary text-white"
-                    : "bg-white"
+                  activeCategory === item ? "bg-primary text-white" : "bg-white"
                 }`}
             >
               {item}
@@ -106,10 +97,8 @@ function HomeProducts() {
         </div>
       </div>
 
-     
       {loading && <p className="mt-6 text-gray-500">Searching...</p>}
 
-   
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6 mt-6 pb-14 w-full">
         {!loading && products.length > 0 ? (
           products.map((product) => (
